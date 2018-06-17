@@ -166,7 +166,7 @@ void loop()
   // along the x-axis just like in the LSM9DS0 sensor. This rotation can be
   // modified to allow any convenient orientation convention. This is ok by
   // aircraft orientation standards! Pass gyro rate as rad/s
-//  MadgwickQuaternionUpdate(myIMU.ax, myIMU.ay, myIMU.az, myIMU.gx*PI/180.0f, myIMU.gy*PI/180.0f, myIMU.gz*PI/180.0f,  myIMU.my,  myIMU.mx, myIMU.mz);
+  // MadgwickQuaternionUpdate(myIMU.ax, myIMU.ay, myIMU.az, myIMU.gx*PI/180.0f, myIMU.gy*PI/180.0f, myIMU.gz*PI/180.0f,  myIMU.my,  myIMU.mx, myIMU.mz);
   MahonyQuaternionUpdate(myIMU.ax, myIMU.ay, myIMU.az, myIMU.gx*DEG_TO_RAD,
                          myIMU.gy*DEG_TO_RAD, myIMU.gz*DEG_TO_RAD, myIMU.my,
                          myIMU.mx, myIMU.mz, myIMU.deltat);
@@ -179,26 +179,40 @@ void loop()
     if (myIMU.delt_t > 500)
     {
       if(SerialDebug)
-      {
-        Serial.print("ax = "); Serial.print((int)1000*myIMU.ax);
-        Serial.print(" ay = "); Serial.print((int)1000*myIMU.ay);
-        Serial.print(" az = "); Serial.print((int)1000*myIMU.az);
-        Serial.println(" mg");
+      { 
+        // Acceleration is given in "mg"
+        // The order is ax, ay, az
+        Serial.print((int)1000*myIMU.ax);
+        Serial.print(" ");
+        Serial.print((int)1000*myIMU.ay);
+        Serial.print(" ");
+        Serial.print((int)1000*myIMU.az);
+        Serial.print(" ");
 
-        Serial.print("gx = "); Serial.print( myIMU.gx, 2);
-        Serial.print(" gy = "); Serial.print( myIMU.gy, 2);
-        Serial.print(" gz = "); Serial.print( myIMU.gz, 2);
-        Serial.println(" deg/s");
+        // Gyro measurements are given in "deg/s"
+        // The order is gx, gy, gz
+        Serial.print( myIMU.gx, 2);
+        Serial.print(" ");
+        Serial.print( myIMU.gy, 2);
+        Serial.print(" ");
+        Serial.print( myIMU.gz, 2);
+        Serial.print(" ");
 
-        Serial.print("mx = "); Serial.print( (int)myIMU.mx );
-        Serial.print(" my = "); Serial.print( (int)myIMU.my );
-        Serial.print(" mz = "); Serial.print( (int)myIMU.mz );
-        Serial.println(" mG");
+        // Magnetometer measurements are given in "mG"
+        // The order is mx, my, mz
+        Serial.print( (int)myIMU.mx );
+        Serial.print(" ");
+        Serial.print( (int)myIMU.my );
+        Serial.print(" ");
+        Serial.print( (int)myIMU.mz );
+        Serial.println();
 
+        /* Quaternions?
         Serial.print("q0 = "); Serial.print(*getQ());
         Serial.print(" qx = "); Serial.print(*(getQ() + 1));
         Serial.print(" qy = "); Serial.print(*(getQ() + 2));
         Serial.print(" qz = "); Serial.println(*(getQ() + 3));
+        */
       }
 
 // Define output variables from updated quaternion---these are Tait-Bryan
@@ -233,20 +247,22 @@ void loop()
       myIMU.yaw   -= 8.5;
       myIMU.roll  *= RAD_TO_DEG;
 
+    
       if(SerialDebug)
       {
+        /*
         Serial.print("Yaw, Pitch, Roll: ");
         Serial.print(myIMU.yaw, 2);
         Serial.print(", ");
         Serial.print(myIMU.pitch, 2);
         Serial.print(", ");
         Serial.println(myIMU.roll, 2);
-
         Serial.print("rate = ");
         Serial.print((float)myIMU.sumCount/myIMU.sum, 2);
         Serial.println(" Hz");
+        */
       }
-
+    
 
       myIMU.count = millis();
       myIMU.sumCount = 0;

@@ -251,10 +251,10 @@ void loop()
         */
       }
       SimbleeBLE.sendFloat(ax);
-      delay(20);
-      SimbleeBLE.sendFloat(ay);
-      delay(20);
-      SimbleeBLE.sendFloat(az);
+//      delay(20);
+//      SimbleeBLE.sendFloat(ay);
+//      delay(20);
+//      SimbleeBLE.sendFloat(az);
 
       myIMU.count = millis();
       myIMU.sumCount = 0;

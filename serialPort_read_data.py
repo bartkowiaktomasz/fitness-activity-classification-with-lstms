@@ -1,49 +1,20 @@
 import serial as sr
 import numpy as np
-#import Visualization as visualize
-from drawnow import *
-
+import visualize as vis
 
 ##### GLOBAL VARIABLES
 port = '/dev/ttyUSB0'
 baud = 9600
-
-plotRange_x = 50
-plotRange_y = 2000
 
 ##### READINGS LIST
 ax_readings = []
 ay_readings = []
 az_readings = []
 
-def applyPlotStyle():
-    plt.grid(True)
-    plt.xlim(0,plotRange_x)
-    plt.ylim(-1 * plotRange_y, plotRange_y)
-    #plt.xlabel('Time')
-    plt.ylabel('Acceleration (mG)')
-
-def makePlot():
-    plt.subplot(2,2,1)
-    applyPlotStyle()
-    plt.title('Acceleration x')
-    plt.plot(ax_readings, 'ro-', label='')
-
-    plt.subplot(2,2,2)
-    plt.ylabel('Acceleration (mG)')
-    applyPlotStyle()
-    plt.title('Acceleration y')
-    plt.plot(ay_readings, 'bo-', label='Acceleration y')
-
-
-    plt.subplot(2,2,3)
-    applyPlotStyle()
-    plt.title('Acceleration z')
-    plt.plot(az_readings, 'go-', label='Acceleration z')
-
 if __name__ == '__main__':
     serial = sr.Serial(port, baud)
 
+    # Counter for the graph
     count = 0
     while True:
         line = serial.readline()
@@ -73,7 +44,8 @@ if __name__ == '__main__':
             ax_readings.append(ax)
             ay_readings.append(ay)
             az_readings.append(az)
-            drawnow(makePlot)
+
+            vis.drawGraphs(ax_readings, ay_readings, ay_readings)
 
             count += 1
             if(count > 50):

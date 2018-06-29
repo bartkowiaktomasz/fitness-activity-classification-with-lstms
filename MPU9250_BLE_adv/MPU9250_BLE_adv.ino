@@ -18,9 +18,23 @@
 #include <Wire.h>
 #include <SPI.h>
 
-
 #define AHRS true         // Set to false for basic data read
 #define SerialDebug true  // Set to true to get Serial output for debugging
+
+typedef struct dataStruct{
+  float ax;
+  float ay;
+  float az;
+//  float gx;
+//  float gy;
+//  float gz;
+//  float mx;
+//  float my;
+//  float mz;
+} dataPackage_t;
+
+dataPackage_t dataPackage;
+char data[9];
 
 // Pin definitions
 int intPin = 12;  // These can be changed, 2 and 3 are the Arduinos ext int pins
@@ -157,16 +171,6 @@ void loop()
 
   // Must be called before updating quaternions!
   myIMU.updateTime();
-
-  // Sensors x (y)-axis of the accelerometer is aligned with the y (x)-axis of
-  // the magnetometer; the magnetometer z-axis (+ down) is opposite to z-axis
-  // (+ up) of accelerometer and gyro! We have to make some allowance for this
-  // orientationmismatch in feeding the output to the quaternion filter. For the
-  // MPU-9250, we have chosen a magnetic rotation that keeps the sensor forward
-  // along the x-axis just like in the LSM9DS0 sensor. This rotation can be
-  // modified to allow any convenient orientation convention. This is ok by
-  // aircraft orientation standards! Pass gyro rate as rad/s
-  // MadgwickQuaternionUpdate(myIMU.ax, myIMU.ay, myIMU.az, myIMU.gx*PI/180.0f, myIMU.gy*PI/180.0f, myIMU.gz*PI/180.0f,  myIMU.my,  myIMU.mx, myIMU.mz);
   MahonyQuaternionUpdate(myIMU.ax, myIMU.ay, myIMU.az, myIMU.gx*DEG_TO_RAD,
                          myIMU.gy*DEG_TO_RAD, myIMU.gz*DEG_TO_RAD, myIMU.my,
                          myIMU.mx, myIMU.mz, myIMU.deltat);
@@ -186,6 +190,7 @@ void loop()
         ax = (float)1000*myIMU.ax;
         ay = (float)1000*myIMU.ay;
         az = (float)1000*myIMU.az;
+        
         Serial.print(ax);
         Serial.print(" ");
         Serial.print(ay);
@@ -210,61 +215,39 @@ void loop()
         Serial.print(" ");
         Serial.print( (int)myIMU.mz );
         Serial.println();
-
-        /* Quaternions?
-        Serial.print("q0 = "); Serial.print(*getQ());
-        Serial.print(" qx = "); Serial.print(*(getQ() + 1));
-        Serial.print(" qy = "); Serial.print(*(getQ() + 2));
-        Serial.print(" qz = "); Serial.println(*(getQ() + 3));
-        */
       }
+
+      dataPackage.ax = ax;
+      dataPackage.ay = ay;
+      dataPackage.az = az;
       
-      myIMU.yaw   = atan2(2.0f * (*(getQ()+1) * *(getQ()+2) + *getQ() *
-                    *(getQ()+3)), *getQ() * *getQ() + *(getQ()+1) * *(getQ()+1)
-                    - *(getQ()+2) * *(getQ()+2) - *(getQ()+3) * *(getQ()+3));
-      myIMU.pitch = -asin(2.0f * (*(getQ()+1) * *(getQ()+3) - *getQ() *
-                    *(getQ()+2)));
-      myIMU.roll  = atan2(2.0f * (*getQ() * *(getQ()+1) + *(getQ()+2) *
-                    *(getQ()+3)), *getQ() * *getQ() - *(getQ()+1) * *(getQ()+1)
-                    - *(getQ()+2) * *(getQ()+2) + *(getQ()+3) * *(getQ()+3));
-      myIMU.pitch *= RAD_TO_DEG;
-      myIMU.yaw   *= RAD_TO_DEG;
-      // Declination of SparkFun Electronics (40°05'26.6"N 105°11'05.9"W) is
-      //    8° 30' E  ± 0° 21' (or 8.5°) on 2016-07-19
-      // - http://www.ngdc.noaa.gov/geomag-web/#declination
-      myIMU.yaw   -= 8.5;
-      myIMU.roll  *= RAD_TO_DEG;
+      int16_t x = (uint16_t) dataPackage.ax;
+      int16_t y = (uint16_t) dataPackage.ay;
+      int16_t z = (uint16_t) dataPackage.ay;
 
-    
-      if(SerialDebug)
-      {
-        /*
-        Serial.print("Yaw, Pitch, Roll: ");
-        Serial.print(myIMU.yaw, 2);
-        Serial.print(", ");
-        Serial.print(myIMU.pitch, 2);
-        Serial.print(", ");
-        Serial.println(myIMU.roll, 2);
-        Serial.print("rate = ");
-        Serial.print((float)myIMU.sumCount/myIMU.sum, 2);
-        Serial.println(" Hz");
-        */
-      }
-      SimbleeBLE.sendFloat(ax);
-      delay(100);
-      SimbleeBLE.sendFloat(ay);
-      delay(100);
-      SimbleeBLE.sendFloat(az);
-      delay(100);
+      // Check if changing order gives the same results
+      data[1] = (x >> 8) & 0xFF;
+      data[0] = (byte)x;
+      data[2] = (uint8_t)((dataPackage.ax - x) * 100);
+      data[4] = (y >> 8) & 0xFF;
+      data[3] = (byte)y;
+      data[5] = (uint8_t)((dataPackage.ay - y) * 100);
+      data[7] = (z >> 8) & 0xFF;
+      data[6] = (byte)z;
+      data[8] = (uint8_t)((dataPackage.ay - z) * 100);
+      
+
+      SimbleeBLE.send(data, sizeof(data));
+//      delay(100);
+//      SimbleeBLE.sendFloat(ay);
+//      delay(100);
+//      SimbleeBLE.sendFloat(az);
+//      delay(100);
 
       myIMU.count = millis();
       myIMU.sumCount = 0;
       myIMU.sum = 0;
 
-      // send the sample to the iPhone
-      // SimbleeBLE.sendInt(counter);
-      // counter++;
-    //  delay(5000);
-    } // if (myIMU.delt_t > 500)
+    }
 }
 

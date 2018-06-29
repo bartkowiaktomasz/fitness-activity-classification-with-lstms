@@ -73,7 +73,7 @@ if __name__ == '__main__':
             ax_readings.append(ax)
             ay_readings.append(ay)
             az_readings.append(az)
-            # drawnow(makePlot)
+            drawnow(makePlot)
 
             count += 1
             if(count > 50):

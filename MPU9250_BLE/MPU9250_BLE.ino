@@ -21,22 +21,7 @@
 #define AHRS true         // Set to false for basic data read
 #define SerialDebug true  // Set to true to get Serial output for debugging
 
-typedef struct dataStruct{
-  float ax;
-  float ay;
-  float az;
-//  float gx;
-//  float gy;
-//  float gz;
-//  float mx;
-//  float my;
-//  float mz;
-} dataPackage_t;
-
-dataPackage_t dataPackage;
-//char data[9];
-char data[12];
-
+char data[32];
 
 // Pin definitions
 int intPin = 12;  // These can be changed, 2 and 3 are the Arduinos ext int pins
@@ -97,8 +82,10 @@ void setup()
 
     // Get magnetometer calibration from AK8963 ROM
     myIMU.initAK8963(myIMU.magCalibration);
+    
     // Initialize device for active mode read of magnetometer
     Serial.println("AK8963 initialized for active data mode....");
+    
     if (SerialDebug)
     {
       //  Serial.println("Calibration values: ");
@@ -180,7 +167,10 @@ void loop()
   
     // Serial print and/or display at 0.5 s rate independent of data rates
     myIMU.delt_t = millis() - myIMU.count;
-    float ax, ay, az;
+    
+    int16_t ax, ay, az;
+    int16_t gx, gy, gz;
+    int16_t mx, my, mz;
 
     // update LCD once per half-second independent of read rate
     if (myIMU.delt_t > 500)
@@ -189,9 +179,17 @@ void loop()
       { 
         // Acceleration is given in "mg"
         // The order is ax, ay, az
-        ax = (float)1000*myIMU.ax;
-        ay = (float)1000*myIMU.ay;
-        az = (float)1000*myIMU.az;
+        ax = (int16_t)1000*myIMU.ax;
+        ay = (int16_t)1000*myIMU.ay;
+        az = (int16_t)1000*myIMU.az;
+
+        gx = (int16_t)myIMU.gx;
+        gy = (int16_t)myIMU.gy;
+        gz = (int16_t)myIMU.gz;
+
+        mx = (int16_t)myIMU.mx;
+        my = (int16_t)myIMU.my;
+        mz = (int16_t)myIMU.mz;
         
         Serial.print(ax);
         Serial.print(" ");
@@ -219,9 +217,16 @@ void loop()
         Serial.println();
       }
 
+      int DATA_SIZE = 2;
       memcpy(data, &ax, sizeof(ax));
-      memcpy(data + 4, &ay, sizeof(ay));
-      memcpy(data + 8, &az, sizeof(az));
+      memcpy(data + 1 * DATA_SIZE, &ay, sizeof(ay));
+      memcpy(data + 2 * DATA_SIZE, &az, sizeof(az));
+      memcpy(data + 3 * DATA_SIZE, &az, sizeof(gx));
+      memcpy(data + 4 * DATA_SIZE, &az, sizeof(gy));
+      memcpy(data + 5 * DATA_SIZE, &az, sizeof(gz));
+      memcpy(data + 6 * DATA_SIZE, &az, sizeof(mx));
+      memcpy(data + 7 * DATA_SIZE, &az, sizeof(my));
+//      memcpy(data + 8 * DATA_SIZE, &az, sizeof(mz));
       
       SimbleeBLE.send(data, sizeof(data));
 

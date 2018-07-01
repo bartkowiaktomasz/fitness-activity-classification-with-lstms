@@ -2,7 +2,7 @@ from drawnow import *
 
 ##### GLOBAL VARIABLES
 plotRange_x = 50
-plotRange_y = 2000
+plotRange_y = 20
 
 def applyPlotStyle():
     plt.grid(True)

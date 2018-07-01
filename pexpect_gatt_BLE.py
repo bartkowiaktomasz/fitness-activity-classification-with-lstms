@@ -63,13 +63,18 @@ if __name__ == '__main__':
         ay = struct.unpack(DATA_TYPE, bytes.fromhex(ay_raw))[0]
         az = struct.unpack(DATA_TYPE, bytes.fromhex(az_raw))[0]
 
+        # Scale to the same range as WISDM dataset
+        ax = ax/100
+        ay = ay/100
+        az = az/100
+
         print(ax, ay, az)
 
         ax_readings.append(ax)
         ay_readings.append(ay)
         az_readings.append(az)
 
-        vis.drawGraphs(ax_readings, ay_readings, ay_readings)
+        vis.drawGraphs(ax_readings, ay_readings, az_readings)
 
         count += 1
         if(count > 50):

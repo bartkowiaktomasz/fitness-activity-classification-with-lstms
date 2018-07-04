@@ -78,6 +78,7 @@ def train_evaluate_classifier(data_convoluted, labels):
     sess.run(tf.global_variables_initializer())
 
     train_count = len(X_train)
+    print("X_train length: ", len(X_train))
 
     for i in range(1, N_EPOCHS + 1):
         for start, end in zip(range(0, train_count, BATCH_SIZE), range(BATCH_SIZE, train_count + 1, BATCH_SIZE)):
@@ -86,13 +87,13 @@ def train_evaluate_classifier(data_convoluted, labels):
             _, acc_train, loss_train = sess.run([y_pred_softmax, accuracy, loss], feed_dict={X: X_train, y: y_train})
             _, acc_test, loss_test = sess.run([y_pred_softmax, accuracy, loss], feed_dict={X: X_test, y: y_test})
 
-            if(i % 5 != 0):
-                continue
+        if(i % 5 != 0):
+            continue
 
-            print('epoch: {} test accuracy: {} loss: {}'.format(i, acc_test, loss_test))
+        print('epoch: {} test accuracy: {} loss: {}'.format(i, acc_test, loss_test))
 
     # Save the model
-    saver.save(sess, "./classificator.ckpt")
+    saver.save(sess, MODEL_PATH)
     predictions, acc_final, loss_final = sess.run([y_pred_softmax, accuracy, loss], feed_dict={X: X_test, y: y_test})
 
     return acc_final
@@ -102,6 +103,8 @@ def train_evaluate_classifier(data_convoluted, labels):
 ##################################################
 if __name__ == '__main__':
 
-    data_convoluted, labels = get_convoluted_data(DATA_PATH, COLUMN_NAMES, SEGMENT_TIME_SIZE, TIME_STEP)
+    data = pd.read_pickle(DATA_PATH)
+    data_convoluted, labels = get_convoluted_data(data)
+
     acc_final = train_evaluate_classifier(data_convoluted, labels)
     print("Final accuracy: ", acc_final)

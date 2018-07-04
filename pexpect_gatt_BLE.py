@@ -16,6 +16,17 @@ ax_readings_graph = []
 ay_readings_graph = []
 az_readings_graph = []
 
+##### READINGS LIST
+ax_readings = []
+ay_readings = []
+az_readings = []
+mx_readings = []
+my_readings = []
+mz_readings = []
+gx_readings = []
+gy_readings = []
+gz_readings = []
+
 ##################################################
 ### FUNCTIONS
 ##################################################
@@ -69,19 +80,8 @@ if __name__ == '__main__':
     gatt.expect("Connection successful")
 
     graph_counter = 0
-    while(True):
-        ##### READINGS LIST
-        ax_readings = []
-        ay_readings = []
-        az_readings = []
-        mx_readings = []
-        my_readings = []
-        mz_readings = []
-        gx_readings = []
-        gy_readings = []
-        gz_readings = []
-
-
+    outer_loop_counter = 0
+    while(outer_loop_counter < DATA_COLLECTION_ITERATIONS):
         print("\n\nWhat activity are you going to perform? Type:")
         print("\"d\" for Downstairs\n\"u\" for Upstairs")
         print("\"sit\" for Sitting\n\"stan\" for Standing")
@@ -146,13 +146,15 @@ if __name__ == '__main__':
 
             inner_loop_counter += 1
 
-        activity_list = [activity for _ in range(SEGMENT_TIME_SIZE)]
-        data_dict = {
-                    'activity': activity_list, 'acc-x-axis': ax_readings,
-                    'acc-y-axis': ay_readings, 'acc-z-axis': az_readings, \
-                    'gyro-x-axis': gx_readings, 'gyro-y-axis': gy_readings, \
-                    'gyro-z-axis': gz_readings, 'mag-x-axis': mx_readings, \
-                    'mag-y-axis': my_readings, 'mag-z-axis': mz_readings
-                     }
-        data_frame = pd.DataFrame(data=data_dict)
-        data_frame.to_pickle('test.pckl')
+        outer_loop_counter += 1
+
+    activity_list = [activity for _ in range(DATA_COLLECTION_ITERATIONS*SEGMENT_TIME_SIZE)]
+    data_dict = {
+                'activity': activity_list, 'acc-x-axis': ax_readings,
+                'acc-y-axis': ay_readings, 'acc-z-axis': az_readings, \
+                'gyro-x-axis': gx_readings, 'gyro-y-axis': gy_readings, \
+                'gyro-z-axis': gz_readings, 'mag-x-axis': mx_readings, \
+                'mag-y-axis': my_readings, 'mag-z-axis': mz_readings
+                 }
+    data_frame = pd.DataFrame(data=data_dict)
+    data_frame.to_pickle('standing_test.pckl')

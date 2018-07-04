@@ -21,12 +21,17 @@ LABELS_NAMES = [
     'Sitting',
     'Standing',
     'Staying',
-    'Walking'
+    'Walking',
+    'Jumping'
 ]
 
-DATA_PATH = 'data/WISDM_ar_v1.1_raw.txt'
+DATA_DIR = 'data/'
+DATA_PATH = 'data/data.pckl'
+MODEL_PATH = 'model/classificator.ckpt'
 MODEL_META_PATH = 'model/classificator.ckpt.meta'
 MODEL_CHECKPOINT_PATH = 'model/'
+
+
 
 RANDOM_SEED = 13
 
@@ -45,7 +50,7 @@ N_EPOCHS = 50
 L2_LOSS = 0.0015
 LEARNING_RATE = 0.0025
 N_HIDDEN_NEURONS = 30
-BATCH_SIZE = 64
+BATCH_SIZE = 1
 
 ##################################################
 ### DATA COLLECTION - GATT
@@ -57,4 +62,11 @@ UUID_DATA = "2d30c082-f39f-4ce6-923f-3484ea480596"
 DATA_TYPE = 'h' # Short integer
 DATA_SIZE_BYTES = 2
 
+DATA_COLLECTION_ITERATIONS = 1
+
 SCALE_FACTOR = 100
+
+##################################################
+### DATA TESTING
+##################################################
+TEST_SIZE = 0.3

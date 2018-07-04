@@ -18,10 +18,6 @@ def softmax_to_label(array):
     return LABELS_NAMES[i]
 
 def evaluate(X_test, y_test):
-
-    # Display all variables
-    # chkp.print_tensors_in_checkpoint_file("model/classificator.ckpt", tensor_name='', all_tensors=False, all_tensor_names=True)
-
     # Load the parameters
     with tf.Session() as sess:
         saver = tf.train.import_meta_graph(MODEL_META_PATH)
@@ -50,20 +46,16 @@ def evaluate(X_test, y_test):
 ### MAIN
 ##################################################
 if __name__ == '__main__':
-
     # LOAD DATA
-    data = pd.read_csv(DATA_PATH, header=None, names=COLUMN_NAMES)
-    data['z-axis'].replace({';': ''}, regex=True, inplace=True)
-    data = data.dropna()
-
-    data = pd.read_pickle('data_ble_standing.pkl')
+    data = pd.read_pickle('standing_test.pckl')
     data_convoluted, labels = get_convoluted_data(data)
 
     # SPLIT INTO TRAINING AND TEST SETS
-    # _, X_test, _, y_test = train_test_split(data_convoluted, labels, test_size=0.05, random_state=RANDOM_SEED)
+    # _, X_test, _, y_test = train_test_split(data_convoluted, labels, test_size=TEST_SIZE, random_state=RANDOM_SEED)
 
     X_test = data_convoluted
     y_test = labels
 
     accuracy = evaluate(X_test, y_test)
+    print("Test set size: ", len(y_test))
     print("Final accuracy: ", accuracy)

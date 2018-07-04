@@ -13,10 +13,10 @@ def get_convoluted_data(data):
 
     # Slide a "SEGMENT_TIME_SIZE" wide window with a step size of "TIME_STEP"
     # print("SEGMENT_TIME_SIZE, N_HIDDEN_NEURONS, BATCH_SIZE: ", SEGMENT_TIME_SIZE, N_HIDDEN_NEURONS, BATCH_SIZE)
-    for i in range(0, len(data) - SEGMENT_TIME_SIZE, TIME_STEP):
-        x = data['x-axis'].values[i: i + SEGMENT_TIME_SIZE]
-        y = data['y-axis'].values[i: i + SEGMENT_TIME_SIZE]
-        z = data['z-axis'].values[i: i + SEGMENT_TIME_SIZE]
+    for i in range(0, len(data) - SEGMENT_TIME_SIZE + 1, TIME_STEP):
+        x = data['acc-x-axis'].values[i: i + SEGMENT_TIME_SIZE]
+        y = data['acc-y-axis'].values[i: i + SEGMENT_TIME_SIZE]
+        z = data['acc-z-axis'].values[i: i + SEGMENT_TIME_SIZE]
         data_convoluted.append([x, y, z])
 
         # Label for a data window is the label that appears most commonly

@@ -26,6 +26,7 @@ LABELS_NAMES = [
 ]
 
 DATA_DIR = 'data/'
+DATA_TEMP_DIR = 'data_temp/'
 DATA_PATH = 'data/data.pckl'
 MODEL_PATH = 'model/classificator.ckpt'
 MODEL_META_PATH = 'model/classificator.ckpt.meta'
@@ -41,7 +42,7 @@ TIME_STEP = 10
 SEGMENT_TIME_SIZE = 10
 
 # Model
-N_CLASSES = 6
+N_CLASSES = 7
 N_FEATURES = 3  # x-acceleration, y-acceleration, z-acceleration
 
 # Hyperparameters
@@ -62,7 +63,7 @@ UUID_DATA = "2d30c082-f39f-4ce6-923f-3484ea480596"
 DATA_TYPE = 'h' # Short integer
 DATA_SIZE_BYTES = 2
 
-DATA_COLLECTION_ITERATIONS = 1
+DATA_COLLECTION_ITERATIONS = 10
 
 SCALE_FACTOR = 100
 

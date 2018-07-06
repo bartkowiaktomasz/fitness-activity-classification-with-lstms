@@ -11,6 +11,7 @@ import pandas as pd
 import visualize as vis
 
 from config import * # Global variables
+from model_test import preprocess_and_evaluate
 
 ax_readings_graph = []
 ay_readings_graph = []
@@ -70,17 +71,14 @@ def input_to_activity(input):
     else:
         return -1
 
-
-##################################################
-### MAIN
-##################################################
-if __name__ == '__main__':
+def runBLE():
     gatt = pexpect.spawn("gatttool -t random -b " + IMU_MAC_ADDRESS + " -I")
     gatt.sendline("connect")
     gatt.expect("Connection successful")
 
     graph_counter = 0
     outer_loop_counter = 0
+    activity_list = []
     while(outer_loop_counter < DATA_COLLECTION_ITERATIONS):
         print("\n\nWhat activity are you going to perform? Type:")
         print("\"d\" for Downstairs\n\"u\" for Upstairs")
@@ -147,8 +145,8 @@ if __name__ == '__main__':
             inner_loop_counter += 1
 
         outer_loop_counter += 1
+        activity_list += [activity for _ in range(SEGMENT_TIME_SIZE)]
 
-    activity_list = [activity for _ in range(DATA_COLLECTION_ITERATIONS*SEGMENT_TIME_SIZE)]
     data_dict = {
                 'activity': activity_list, 'acc-x-axis': ax_readings,
                 'acc-y-axis': ay_readings, 'acc-z-axis': az_readings, \
@@ -157,4 +155,17 @@ if __name__ == '__main__':
                 'mag-y-axis': my_readings, 'mag-z-axis': mz_readings
                  }
     data_frame = pd.DataFrame(data=data_dict)
-    data_frame.to_pickle('standing_test.pckl')
+
+    is_save = input("Do you want to save the sample? [y/n]")
+    if(is_save == "y"):
+        data_frame.to_pickle('data_temp/output.pckl')
+
+    is_evaluate = input("Do you want to evaluate (test) the sample? [y/n]")
+    if(is_evaluate == "y"):
+        preprocess_and_evaluate(data_frame)
+
+##################################################
+### MAIN
+##################################################
+if __name__ == '__main__':
+    runBLE()

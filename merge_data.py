@@ -6,7 +6,7 @@ from config import * # Global variables
 if __name__ == '__main__':
 
     dfs = []
-    for file in glob.glob(DATA_DIR + '*.pckl'):
+    for file in glob.glob(DATA_TEMP_DIR + '*.pckl'):
         data = pd.read_pickle(file)
         dfs.append(data)
 

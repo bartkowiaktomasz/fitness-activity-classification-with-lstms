@@ -49,7 +49,7 @@ def createBidirLSTM(X, SEGMENT_TIME_SIZE, N_HIDDEN_NEURONS):
 def train_evaluate_classifier(data_convoluted, labels):
 
     # SPLIT INTO TRAINING AND TEST SETS
-    X_train, X_test, y_train, y_test = train_test_split(data_convoluted, labels, test_size=0.3, random_state=RANDOM_SEED)
+    X_train, X_test, y_train, y_test = train_test_split(data_convoluted, labels, test_size=TEST_SIZE, random_state=RANDOM_SEED)
 
     ##### BUILD A MODEL
     # Reset compuitational graph

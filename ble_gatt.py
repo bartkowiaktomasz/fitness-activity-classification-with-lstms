@@ -11,7 +11,7 @@ import pandas as pd
 import visualize as vis
 
 from config import * # Global variables
-from model_test import preprocess_and_evaluate
+from model_test import preprocess_evaluate
 
 ax_readings_graph = []
 ay_readings_graph = []
@@ -162,7 +162,7 @@ def runBLE():
 
     is_evaluate = input("Do you want to evaluate (test) the sample? [y/n]")
     if(is_evaluate == "y"):
-        preprocess_and_evaluate(data_frame)
+        preprocess_evaluate(data_frame)
 
 ##################################################
 ### MAIN

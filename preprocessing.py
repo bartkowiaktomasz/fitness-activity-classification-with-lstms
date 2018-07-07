@@ -6,14 +6,19 @@ from scipy import stats
 from config import * # Global variables
 
 # Returns a tuple consisting of a convoluted data and labels
-def get_convoluted_data(data):
+def get_convoluted_data(data, isOneSample=False):
 
     data_convoluted = []
     labels = []
 
+    increment = 0
+    if(isOneSample):
+        increment = 1
+
     # Slide a "SEGMENT_TIME_SIZE" wide window with a step size of "TIME_STEP"
-    # print("SEGMENT_TIME_SIZE, N_HIDDEN_NEURONS, BATCH_SIZE: ", SEGMENT_TIME_SIZE, N_HIDDEN_NEURONS, BATCH_SIZE)
-    for i in range(0, len(data) - SEGMENT_TIME_SIZE + 1, TIME_STEP):
+    #   Increment allows the loop to run if there is just one sample, for which
+    #   len(data) == SEGMENT_TIME_SIZE
+    for i in range(0, len(data) - SEGMENT_TIME_SIZE + increment, TIME_STEP):
         x = data['acc-x-axis'].values[i: i + SEGMENT_TIME_SIZE]
         y = data['acc-y-axis'].values[i: i + SEGMENT_TIME_SIZE]
         z = data['acc-z-axis'].values[i: i + SEGMENT_TIME_SIZE]
@@ -33,7 +38,6 @@ def get_convoluted_data(data):
     # labels_ = np.asarray(pd.get_dummies(labels), dtype=np.float32)
 
     labels = one_hot_encode(labels)
-
     return data_convoluted, labels
 
 def one_hot_encode(labels):

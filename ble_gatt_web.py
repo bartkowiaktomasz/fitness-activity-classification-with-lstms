@@ -110,7 +110,7 @@ def runBLE(activity):
     data_frame = pd.DataFrame(data=data_dict)
 
     num_files = len(glob.glob(DATA_TEMP_DIR + '*.pckl'))
-    data_frame.to_pickle('data_temp/sample_{}.pckl'.format(num_files + 1))
+    data_frame.to_pickle('data_temp/sample_{}_{}.pckl'.format(activity, num_files + 1))
 
 ##################################################
 ### MAIN

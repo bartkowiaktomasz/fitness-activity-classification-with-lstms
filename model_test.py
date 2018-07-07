@@ -41,17 +41,23 @@ def evaluate(X_test, y_test):
 
         return acc
 
-def preprocess_and_evaluate(data):
-    X_test, y_test = get_convoluted_data(data)
+def preprocess_evaluate(data):
+    data_convoluted, labels = get_convoluted_data(data)
+    _, X_test, _, y_test = train_test_split(data_convoluted, labels, test_size=TEST_SIZE, random_state=RANDOM_SEED)
     accuracy = evaluate(X_test, y_test)
     print("Test set size: ", len(y_test))
     print("Final accuracy: ", accuracy)
 
+def preprocess_evaluate_one_sample(sample):
+    X_test, y_test = get_convoluted_data(sample, isOneSample=True)
+    accuracy = evaluate(X_test, y_test)
 
 ##################################################
 ### MAIN
 ##################################################
 if __name__ == '__main__':
-    data = pd.read_pickle(DATA_PATH)
-    data_shuffled = data.sample(frac=1)
-    preprocess_and_evaluate(data_shuffled)
+    # data = pd.read_pickle(DATA_PATH)
+    # preprocess_and_evaluate(data)
+
+    sample = pd.read_pickle('data_temp/sample_Sitting_47.pckl')
+    preprocess_evaluate_one_sample(sample)

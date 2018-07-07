@@ -9,25 +9,8 @@ import sys
 import glob
 import pandas as pd
 
-import visualize as vis
-
 from config import * # Global variables
-from model_test import preprocess_and_evaluate
 
-ax_readings_graph = []
-ay_readings_graph = []
-az_readings_graph = []
-
-##### READINGS LIST
-ax_readings = []
-ay_readings = []
-az_readings = []
-mx_readings = []
-my_readings = []
-mz_readings = []
-gx_readings = []
-gy_readings = []
-gz_readings = []
 
 ##################################################
 ### FUNCTIONS
@@ -55,6 +38,16 @@ def extract_raw_data(rawdata):
     return ax_raw, ay_raw, az_raw, gx_raw, gy_raw, gz_raw, mx_raw, my_raw, mz_raw
 
 def runBLE(activity):
+    ax_readings = []
+    ay_readings = []
+    az_readings = []
+    mx_readings = []
+    my_readings = []
+    mz_readings = []
+    gx_readings = []
+    gy_readings = []
+    gz_readings = []
+
     gatt = pexpect.spawn("gatttool -t random -b " + IMU_MAC_ADDRESS + " -I")
     gatt.sendline("connect")
     gatt.expect("Connection successful")
@@ -104,22 +97,9 @@ def runBLE(activity):
         my_readings.append(my)
         mz_readings.append(mz)
 
-        ax_readings_graph.append(ax)
-        ay_readings_graph.append(ay)
-        az_readings_graph.append(az)
-
-        # vis.drawGraphs(ax_readings_graph, ay_readings_graph, az_readings_graph)
-
-        graph_counter += 1
-        if(graph_counter > 50):
-            ax_readings_graph.pop(0)
-            ay_readings_graph.pop(0)
-            az_readings_graph.pop(0)
-
         inner_loop_counter += 1
 
     activity_list += [activity for _ in range(SEGMENT_TIME_SIZE)]
-
     data_dict = {
                 'activity': activity_list, 'acc-x-axis': ax_readings,
                 'acc-y-axis': ay_readings, 'acc-z-axis': az_readings, \
@@ -129,14 +109,8 @@ def runBLE(activity):
                  }
     data_frame = pd.DataFrame(data=data_dict)
 
-    # is_save = input("Do you want to save the sample? [y/n]")
-    # if(is_save == "y"):
     num_files = len(glob.glob(DATA_TEMP_DIR + '*.pckl'))
     data_frame.to_pickle('data_temp/sample_{}.pckl'.format(num_files + 1))
-
-    # is_evaluate = input("Do you want to evaluate (test) the sample? [y/n]")
-    # if(is_evaluate == "y"):
-        # preprocess_and_evaluate(data_frame)
 
 ##################################################
 ### MAIN

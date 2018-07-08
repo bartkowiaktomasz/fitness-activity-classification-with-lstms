@@ -43,7 +43,7 @@ SEGMENT_TIME_SIZE = 10
 
 # Model
 N_CLASSES = 7
-N_FEATURES = 3  # x-acceleration, y-acceleration, z-acceleration
+N_FEATURES = 3  # acc, gyro, magnetometer
 
 # Hyperparameters
 N_LSTM_LAYERS = 2
@@ -51,7 +51,7 @@ N_EPOCHS = 50
 L2_LOSS = 0.0015
 LEARNING_RATE = 0.0025
 N_HIDDEN_NEURONS = 30
-BATCH_SIZE = 1
+BATCH_SIZE = 10
 
 ##################################################
 ### DATA COLLECTION - GATT
@@ -63,7 +63,8 @@ UUID_DATA = "2d30c082-f39f-4ce6-923f-3484ea480596"
 DATA_TYPE = 'h' # Short integer
 DATA_SIZE_BYTES = 2
 
-DATA_COLLECTION_ITERATIONS = 2
+DATA_COLLECTION_ITERATIONS = 3
+
 
 SCALE_FACTOR = 100
 

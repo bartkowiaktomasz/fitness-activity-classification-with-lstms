@@ -1,21 +1,21 @@
 # Run with
-# sudo /home/tomasz/anaconda3/bin/python pexpect_gatt_BLE.py
+# sudo /home/tomasz/anaconda3/bin/python ble_gatt.py
 # since sudo uses different python version (see "$ sudo which python")
 
 import pexpect
 import struct
 import time
 import sys
+import glob
+
 import pandas as pd
 
 import visualize as vis
-
 from config import * # Global variables
-from model_test import preprocess_evaluate
 
-ax_readings_graph = []
-ay_readings_graph = []
-az_readings_graph = []
+##################################################
+### GLOBAL VARIABLES
+##################################################
 
 ##### READINGS LIST
 ax_readings = []
@@ -28,10 +28,14 @@ gx_readings = []
 gy_readings = []
 gz_readings = []
 
+ax_readings_graph = []
+ay_readings_graph = []
+az_readings_graph = []
+
 ##################################################
 ### FUNCTIONS
 ##################################################
-def extract_raw_data(rawdata):
+def extract(rawdata):
     shift = 0
     ax_raw = (rawdata[shift + 0] + rawdata[shift + 1])
     shift = 1 * DATA_SIZE_BYTES
@@ -51,7 +55,17 @@ def extract_raw_data(rawdata):
     shift = 8 * DATA_SIZE_BYTES
     mz_raw = (rawdata[shift + 0] + rawdata[shift + 1])
 
-    return ax_raw, ay_raw, az_raw, gx_raw, gy_raw, gz_raw, mx_raw, my_raw, mz_raw
+    ax = struct.unpack(DATA_TYPE, bytes.fromhex(ax_raw))[0]
+    ay = struct.unpack(DATA_TYPE, bytes.fromhex(ay_raw))[0]
+    az = struct.unpack(DATA_TYPE, bytes.fromhex(az_raw))[0]
+    gx = struct.unpack(DATA_TYPE, bytes.fromhex(gx_raw))[0]
+    gy = struct.unpack(DATA_TYPE, bytes.fromhex(gy_raw))[0]
+    gz = struct.unpack(DATA_TYPE, bytes.fromhex(gz_raw))[0]
+    mx = struct.unpack(DATA_TYPE, bytes.fromhex(mx_raw))[0]
+    my = struct.unpack(DATA_TYPE, bytes.fromhex(my_raw))[0]
+    mz = struct.unpack(DATA_TYPE, bytes.fromhex(mz_raw))[0]
+
+    return ax, ay, az, gx, gy, gz, mx, my, mz
 
 def input_to_activity(input):
     if(input == "d"):
@@ -71,7 +85,74 @@ def input_to_activity(input):
     else:
         return -1
 
+def runWebBLE(activity):
+    ax_readings = []
+    ay_readings = []
+    az_readings = []
+    mx_readings = []
+    my_readings = []
+    mz_readings = []
+    gx_readings = []
+    gy_readings = []
+    gz_readings = []
+
+    gatt = pexpect.spawn("gatttool -t random -b " + IMU_MAC_ADDRESS + " -I")
+    gatt.sendline("connect")
+    gatt.expect("Connection successful")
+
+    graph_counter = 0
+    activity_list = []
+    if(activity not in LABELS_NAMES):
+        print("Error: Wrong activity")
+        exit()
+    print("Selected activity: ", activity)
+
+    inner_loop_counter = 0
+    while(inner_loop_counter < SEGMENT_TIME_SIZE):
+        gatt.sendline("char-read-uuid " + UUID_DATA)
+        gatt.expect("handle: 0x0011 	 value: ")
+        gatt.expect(" \r\n")
+
+        rawdata = (gatt.before).decode('UTF-8').strip(' ').split(' ')
+        ax, ay, az, gx, gy, gz, mx, my, mz = extract(rawdata)
+
+        # Scale to the same range as WISDM dataset
+        ax = ax/SCALE_FACTOR
+        ay = ay/SCALE_FACTOR
+        az = az/SCALE_FACTOR
+
+        print("Acceleration x, y, z: ", ax, ay, az)
+        # print("Gyroscope x, y, z: ", gx, gy, gz)
+        # print("Magnetometer x, y, z: ", mx, my, mz)
+
+        ax_readings.append(ax)
+        ay_readings.append(ay)
+        az_readings.append(az)
+        gx_readings.append(gx)
+        gy_readings.append(gy)
+        gz_readings.append(gz)
+        mx_readings.append(mx)
+        my_readings.append(my)
+        mz_readings.append(mz)
+
+        inner_loop_counter += 1
+
+    activity_list += [activity for _ in range(SEGMENT_TIME_SIZE)]
+    data_dict = {
+                'activity': activity_list, 'acc-x-axis': ax_readings,
+                'acc-y-axis': ay_readings, 'acc-z-axis': az_readings, \
+                'gyro-x-axis': gx_readings, 'gyro-y-axis': gy_readings, \
+                'gyro-z-axis': gz_readings, 'mag-x-axis': mx_readings, \
+                'mag-y-axis': my_readings, 'mag-z-axis': mz_readings
+                 }
+    data_frame = pd.DataFrame(data=data_dict)
+
+    num_files = len(glob.glob(DATA_TEMP_DIR + '*.pckl'))
+    data_frame.to_pickle('data_temp/sample_{}_{}.pckl'.format(activity, num_files + 1))
+
 def runBLE():
+    from model_test import preprocess_evaluate, preprocess_evaluate_one_sample
+
     gatt = pexpect.spawn("gatttool -t random -b " + IMU_MAC_ADDRESS + " -I")
     gatt.sendline("connect")
     gatt.expect("Connection successful")
@@ -97,19 +178,9 @@ def runBLE():
             gatt.sendline("char-read-uuid " + UUID_DATA)
             gatt.expect("handle: 0x0011 	 value: ")
             gatt.expect(" \r\n")
+
             rawdata = (gatt.before).decode('UTF-8').strip(' ').split(' ')
-
-            ax_raw, ay_raw, az_raw, gx_raw, gy_raw, gz_raw, mx_raw, my_raw, mz_raw = extract_raw_data(rawdata)
-
-            ax = struct.unpack(DATA_TYPE, bytes.fromhex(ax_raw))[0]
-            ay = struct.unpack(DATA_TYPE, bytes.fromhex(ay_raw))[0]
-            az = struct.unpack(DATA_TYPE, bytes.fromhex(az_raw))[0]
-            gx = struct.unpack(DATA_TYPE, bytes.fromhex(gx_raw))[0]
-            gy = struct.unpack(DATA_TYPE, bytes.fromhex(gy_raw))[0]
-            gz = struct.unpack(DATA_TYPE, bytes.fromhex(gz_raw))[0]
-            mx = struct.unpack(DATA_TYPE, bytes.fromhex(mx_raw))[0]
-            my = struct.unpack(DATA_TYPE, bytes.fromhex(my_raw))[0]
-            mz = struct.unpack(DATA_TYPE, bytes.fromhex(mz_raw))[0]
+            ax, ay, az, gx, gy, gz, mx, my, mz = extract(rawdata)
 
             # Scale to the same range as WISDM dataset
             ax = ax/SCALE_FACTOR
@@ -134,7 +205,7 @@ def runBLE():
             ay_readings_graph.append(ay)
             az_readings_graph.append(az)
 
-            vis.drawGraphs(ax_readings_graph, ay_readings_graph, az_readings_graph)
+            # vis.drawGraphs(ax_readings_graph, ay_readings_graph, az_readings_graph)
 
             graph_counter += 1
             if(graph_counter > 50):

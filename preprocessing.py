@@ -6,23 +6,34 @@ from scipy import stats
 from config import * # Global variables
 
 # Returns a tuple consisting of a convoluted data and labels
-def get_convoluted_data(data, isOneSample=False):
+def get_convoluted_data(data):
 
     data_convoluted = []
     labels = []
 
     increment = 0
-    if(isOneSample):
+    if(len(data) == SEGMENT_TIME_SIZE):
         increment = 1
 
     # Slide a "SEGMENT_TIME_SIZE" wide window with a step size of "TIME_STEP"
     #   Increment allows the loop to run if there is just one sample, for which
     #   len(data) == SEGMENT_TIME_SIZE
     for i in range(0, len(data) - SEGMENT_TIME_SIZE + increment, TIME_STEP):
-        x = data['acc-x-axis'].values[i: i + SEGMENT_TIME_SIZE]
-        y = data['acc-y-axis'].values[i: i + SEGMENT_TIME_SIZE]
-        z = data['acc-z-axis'].values[i: i + SEGMENT_TIME_SIZE]
-        data_convoluted.append([x, y, z])
+        ax = data['acc-x-axis'].values[i: i + SEGMENT_TIME_SIZE]
+        ay = data['acc-y-axis'].values[i: i + SEGMENT_TIME_SIZE]
+        az = data['acc-z-axis'].values[i: i + SEGMENT_TIME_SIZE]
+
+        """
+        gx = data['gyro-x-axis'].values[i: i + SEGMENT_TIME_SIZE]
+        gy = data['gyro-y-axis'].values[i: i + SEGMENT_TIME_SIZE]
+        gz = data['gyro-z-axis'].values[i: i + SEGMENT_TIME_SIZE]
+
+        mx = data['mag-x-axis'].values[i: i + SEGMENT_TIME_SIZE]
+        my = data['mag-y-axis'].values[i: i + SEGMENT_TIME_SIZE]
+        mz = data['mag-z-axis'].values[i: i + SEGMENT_TIME_SIZE]
+        """
+        
+        data_convoluted.append([ax, ay, az])
 
         # Label for a data window is the label that appears most commonly
         label = stats.mode(data['activity'][i: i + SEGMENT_TIME_SIZE])[0][0]

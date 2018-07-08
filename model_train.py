@@ -49,7 +49,7 @@ def createBidirLSTM(X, SEGMENT_TIME_SIZE, N_HIDDEN_NEURONS):
 def train_evaluate_classifier(data_convoluted, labels):
 
     # SPLIT INTO TRAINING AND TEST SETS
-    X_train, X_test, y_train, y_test = train_test_split(data_convoluted, labels, test_size=TEST_SIZE, random_state=RANDOM_SEED)
+    X_train, X_test, y_train, y_test = train_test_split(data_convoluted, labels, test_size=TEST_SIZE, random_state=RANDOM_SEED, shuffle=True)
 
     ##### BUILD A MODEL
     # Reset compuitational graph
@@ -78,7 +78,6 @@ def train_evaluate_classifier(data_convoluted, labels):
     sess.run(tf.global_variables_initializer())
 
     train_count = len(X_train)
-    print("X_train length: ", len(X_train))
 
     for i in range(1, N_EPOCHS + 1):
         for start, end in zip(range(0, train_count, BATCH_SIZE), range(BATCH_SIZE, train_count + 1, BATCH_SIZE)):
@@ -87,10 +86,10 @@ def train_evaluate_classifier(data_convoluted, labels):
             _, acc_train, loss_train = sess.run([y_pred_softmax, accuracy, loss], feed_dict={X: X_train, y: y_train})
             _, acc_test, loss_test = sess.run([y_pred_softmax, accuracy, loss], feed_dict={X: X_test, y: y_test})
 
-        if(i % 5 != 0):
-            continue
+            if(i % 5 != 0):
+                continue
 
-        print('epoch: {} test accuracy: {} loss: {}'.format(i, acc_test, loss_test))
+            print('epoch: {} test accuracy: {} loss: {}'.format(i, acc_test, loss_test))
 
     # Save the model
     saver.save(sess, MODEL_PATH)

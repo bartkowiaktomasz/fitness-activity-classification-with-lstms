@@ -8,7 +8,7 @@ from tensorflow.python.tools import inspect_checkpoint as chkp
 # Local libraries
 from config import * # Global variables
 from preprocessing import get_convoluted_data
-from model_train import createBidirLSTM
+from model_train_tf import createBidirLSTM
 
 ##################################################
 ### FUNCTIONS

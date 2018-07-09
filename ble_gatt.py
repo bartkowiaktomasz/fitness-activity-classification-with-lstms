@@ -85,6 +85,21 @@ def input_to_activity(input):
     else:
         return -1
 
+def gatt_handshake():
+    gatt = pexpect.spawn("gatttool -t random -b " + IMU_MAC_ADDRESS + " -I")
+    gatt.sendline("connect")
+    gatt.expect("Connection successful")
+
+    return gatt
+
+def gatt_read(gatt):
+    gatt.sendline("char-read-uuid " + UUID_DATA)
+    gatt.expect("handle: 0x0011 	 value: ")
+    gatt.expect(" \r\n")
+
+    rawdata = (gatt.before).decode('UTF-8').strip(' ').split(' ')
+    return rawdata
+
 def runWebBLE(activity):
     ax_readings = []
     ay_readings = []
@@ -96,9 +111,7 @@ def runWebBLE(activity):
     gy_readings = []
     gz_readings = []
 
-    gatt = pexpect.spawn("gatttool -t random -b " + IMU_MAC_ADDRESS + " -I")
-    gatt.sendline("connect")
-    gatt.expect("Connection successful")
+    gatt = gatt_handshake()
 
     graph_counter = 0
     activity_list = []
@@ -108,12 +121,8 @@ def runWebBLE(activity):
     print("Selected activity: ", activity)
 
     inner_loop_counter = 0
-    while(inner_loop_counter < SEGMENT_TIME_SIZE):
-        gatt.sendline("char-read-uuid " + UUID_DATA)
-        gatt.expect("handle: 0x0011 	 value: ")
-        gatt.expect(" \r\n")
-
-        rawdata = (gatt.before).decode('UTF-8').strip(' ').split(' ')
+    while(inner_loop_counter < DATA_COLLECTION_TIME):
+        rawdata = gatt_read(gatt)
         ax, ay, az, gx, gy, gz, mx, my, mz = extract(rawdata)
 
         # Scale to the same range as WISDM dataset
@@ -137,7 +146,7 @@ def runWebBLE(activity):
 
         inner_loop_counter += 1
 
-    activity_list += [activity for _ in range(SEGMENT_TIME_SIZE)]
+    activity_list += [activity for _ in range(DATA_COLLECTION_TIME)]
     data_dict = {
                 'activity': activity_list, 'acc-x-axis': ax_readings,
                 'acc-y-axis': ay_readings, 'acc-z-axis': az_readings, \
@@ -153,9 +162,7 @@ def runWebBLE(activity):
 def runBLE():
     from model_test import preprocess_evaluate, preprocess_evaluate_one_sample
 
-    gatt = pexpect.spawn("gatttool -t random -b " + IMU_MAC_ADDRESS + " -I")
-    gatt.sendline("connect")
-    gatt.expect("Connection successful")
+    gatt = gatt_handshake()
 
     graph_counter = 0
     outer_loop_counter = 0
@@ -175,11 +182,8 @@ def runBLE():
 
         inner_loop_counter = 0
         while(inner_loop_counter < SEGMENT_TIME_SIZE):
-            gatt.sendline("char-read-uuid " + UUID_DATA)
-            gatt.expect("handle: 0x0011 	 value: ")
-            gatt.expect(" \r\n")
+            rawdata = gatt_read(gatt)
 
-            rawdata = (gatt.before).decode('UTF-8').strip(' ').split(' ')
             ax, ay, az, gx, gy, gz, mx, my, mz = extract(rawdata)
 
             # Scale to the same range as WISDM dataset

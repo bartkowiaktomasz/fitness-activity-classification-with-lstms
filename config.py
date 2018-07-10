@@ -3,7 +3,6 @@
 ##################################################
 COLUMN_NAMES = [
     'activity',
-    # 'timestamp',
     'acc-x-axis',
     'acc-y-axis',
     'acc-z-axis'
@@ -30,6 +29,7 @@ DATA_PATH = 'data/data.pckl'
 
 # Model
 MODEL_PATH = 'model/model.h5'
+
 # Tensorflow only
 MODEL_META_PATH = 'model/model.ckpt.meta'
 MODEL_CHECKPOINT_PATH = 'model/'
@@ -58,26 +58,25 @@ DROPOUT_RATE = 0.5
 ##################################################
 IMU_MAC_ADDRESS = "FF:3C:8F:22:C9:C8"
 UUID_DATA = "2d30c082-f39f-4ce6-923f-3484ea480596"
+BLE_HANDLE = "0x0011"
 
 # Data type sent from the device
 DATA_TYPE = 'h' # Short integer
-DATA_SIZE_BYTES = 2
+DATA_SIZE_BYTES = 2 # Size of short
 
 # How many times to collect samples
-DATA_COLLECTION_ITERATIONS = 1
+DATA_COLLECTION_TIME = 200
 SCALE_FACTOR = 100
 
 # Data preprocessing
-# For WSIDM TIME_STEP = 100, SEGMENT_TIME_SIZE = 180
 TIME_STEP = 20
 SEGMENT_TIME_SIZE = 40
 
-##################################################
-### DATA COLLECTION - WEB_APP
-##################################################
-DATA_COLLECTION_TIME = 200
+# Train/test proportion
+TEST_SIZE = 0.3
 
 ##################################################
-### DATA TESTING
+### VISUALIZE
 ##################################################
-TEST_SIZE = 0.3
+plotRange_x = 50
+plotRange_y = 20

@@ -2,11 +2,8 @@ import numpy as np
 import pandas as pd
 import keras
 
-from keras.models import Sequential, load_model
-from keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional
-from keras.models import load_model, model_from_json
+from keras.models import load_model
 from sklearn.metrics import confusion_matrix, accuracy_score
-from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
 from visualize import drawConfusionMatrix
@@ -30,7 +27,6 @@ if __name__ == '__main__':
     data = pd.read_pickle(DATA_PATH)
     X_test, y_test = get_convoluted_data(data)
     X_test, y_test = shuffle(X_test, y_test, random_state=0)
-
 
     # Make predictions
     y_predicted = model.predict(X_test)

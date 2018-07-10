@@ -10,6 +10,24 @@ from sklearn.model_selection import train_test_split
 from preprocessing import get_convoluted_data
 from config import *
 
+def createBidirectionalLSTM():
+
+    # Build a model
+    model = Sequential()
+    model.add(Bidirectional(LSTM(N_HIDDEN_NEURONS,
+                            return_sequences=True,
+                            activation="tanh"), input_shape=(SEGMENT_TIME_SIZE, N_FEATURES)))
+    model.add(Bidirectional(LSTM(N_HIDDEN_NEURONS)))
+    model.add(Dropout(DROPOUT_RATE))
+    model.add(Dense(N_CLASSES, activation='sigmoid'))
+    model.compile('adam', 'binary_crossentropy', metrics=['accuracy'])
+    model.fit(X_train, y_train,
+              batch_size=BATCH_SIZE,
+              epochs=N_EPOCHS,
+              validation_data=[X_test, y_test])
+
+    return model
+
 if __name__ == '__main__':
 
     # Load data
@@ -20,19 +38,7 @@ if __name__ == '__main__':
                                                         random_state=RANDOM_SEED,
                                                         shuffle=True)
     # Build a model
-    model = Sequential()
-    model.add(Bidirectional(LSTM(N_HIDDEN_NEURONS,
-                            return_sequences=True,
-                            activation="tanh"), input_shape=(SEGMENT_TIME_SIZE, N_FEATURES)))
-    model.add(Bidirectional(LSTM(N_HIDDEN_NEURONS)))
-    model.add(Dropout(DROPOUT_RATE))
-    model.add(Dense(N_CLASSES, activation='sigmoid'))
-    model.compile('adam', 'binary_crossentropy', metrics=['accuracy'])
-
-    model.fit(X_train, y_train,
-              batch_size=BATCH_SIZE,
-              epochs=N_EPOCHS,
-              validation_data=[X_test, y_test])
+    model = createBidirectionalLSTM()
 
     # Save the model
     model.save(MODEL_PATH)

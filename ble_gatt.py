@@ -77,7 +77,7 @@ def gatt_handshake():
 
 def gatt_read(gatt):
     gatt.sendline("char-read-uuid " + UUID_DATA)
-    gatt.expect("handle: 0x0011 	 value: ")
+    gatt.expect("handle: " + BLE_HANDLE + " 	 value: ")
     gatt.expect(" \r\n")
 
     rawdata = (gatt.before).decode('UTF-8').strip(' ').split(' ')

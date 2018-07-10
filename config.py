@@ -38,7 +38,7 @@ MODEL_CHECKPOINT_PATH = 'model/'
 ##################################################
 ### MODEL
 ##################################################
-RANDOM_SEED = 4
+RANDOM_SEED = 13
 
 # Model
 N_CLASSES = 5
@@ -51,6 +51,7 @@ L2_LOSS = 0.0015
 LEARNING_RATE = 0.0025
 N_HIDDEN_NEURONS = 30
 BATCH_SIZE = 10
+DROPOUT_RATE = 0.5
 
 ##################################################
 ### DATA COLLECTION/PREPROCESSING

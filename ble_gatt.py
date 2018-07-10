@@ -28,6 +28,7 @@ gx_readings = []
 gy_readings = []
 gz_readings = []
 
+##### READINGS LIST FOR GRAPHS
 ax_readings_graph = []
 ay_readings_graph = []
 az_readings_graph = []
@@ -66,12 +67,6 @@ def extract(rawdata):
     mz = struct.unpack(DATA_TYPE, bytes.fromhex(mz_raw))[0]
 
     return ax, ay, az, gx, gy, gz, mx, my, mz
-
-def validate_input(input):
-    if input in LABELS_NAMES:
-        return input
-    else:
-        return -1
 
 def gatt_handshake():
     gatt = pexpect.spawn("gatttool -t random -b " + IMU_MAC_ADDRESS + " -I")
@@ -151,18 +146,25 @@ def runBLE():
     from model_test_tf import preprocess_evaluate
 
     gatt = gatt_handshake()
+    print("How many samples do you want to collect?")
+    number_samples = input()
+    try:
+        number_samples = int(number_samples)
+    except ValueError:
+        print("Not an integer")
+        exit()
 
     graph_counter = 0
     outer_loop_counter = 0
     activity_list = []
-    while(outer_loop_counter < DATA_COLLECTION_ITERATIONS):
+    while(outer_loop_counter < number_samples):
         print("\n\nWhat activity are you going to perform? Type one of the following:")
         for label in LABELS_NAMES:
             print(label)
 
-        activity = validate_input(input())
+        activity = input()
         print("Your activity: ", activity)
-        if(activity == -1):
+        if activity not in LABELS_NAMES:
             print("Wrong input, choose again")
             continue
 
@@ -219,7 +221,7 @@ def runBLE():
 
     is_save = input("Do you want to save the sample? [y/n]")
     if(is_save == "y"):
-        data_frame.to_pickle('data_temp/output.pckl')
+        data_frame.to_pickle('data_temp/sample.pckl')
 
     is_evaluate = input("Do you want to evaluate (test) the sample? [y/n]")
     if(is_evaluate == "y"):

@@ -1,4 +1,9 @@
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 from drawnow import *
+from config import *
 
 ##### GLOBAL VARIABLES
 plotRange_x = 50
@@ -29,8 +34,16 @@ def makePlot():
     plt.title('Acceleration z')
     plt.plot(az, 'go-', label='Acceleration z')
 
+def drawConfusionMatrix(cm):
+    plt.figure(figsize=(16, 14))
+    sns.heatmap(cm/(np.sum(cm, axis=1, keepdims=1)), xticklabels=LABELS_NAMES, yticklabels=LABELS_NAMES, annot=True);
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.title("Confusion matrix")
+    plt.show()
 
-# Interface function
+
+# Interface function for gatt tool
 def drawGraphs(_ax, _ay, _az):
     global ax
     global ay

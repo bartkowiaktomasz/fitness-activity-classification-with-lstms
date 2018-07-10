@@ -67,21 +67,9 @@ def extract(rawdata):
 
     return ax, ay, az, gx, gy, gz, mx, my, mz
 
-def input_to_activity(input):
-    if(input == "d"):
-        return "Downstairs"
-    elif(input == "u"):
-        return "Upstairs"
-    elif(input == "sit"):
-        return "Sitting"
-    elif(input == "stan"):
-        return "Standing"
-    elif(input == "stay"):
-        return "Staying"
-    elif(input == "w"):
-        return "Walking"
-    elif(input == "j"):
-        return "Jumping"
+def validate_input(input):
+    if input in LABELS_NAMES:
+        return input
     else:
         return -1
 
@@ -160,7 +148,7 @@ def runWebBLE(activity):
     data_frame.to_pickle('data_temp/sample_{}_{}.pckl'.format(activity, num_files + 1))
 
 def runBLE():
-    from model_test import preprocess_evaluate, preprocess_evaluate_one_sample
+    from model_test_tf import preprocess_evaluate
 
     gatt = gatt_handshake()
 
@@ -168,13 +156,11 @@ def runBLE():
     outer_loop_counter = 0
     activity_list = []
     while(outer_loop_counter < DATA_COLLECTION_ITERATIONS):
-        print("\n\nWhat activity are you going to perform? Type:")
-        print("\"d\" for Downstairs\n\"u\" for Upstairs")
-        print("\"sit\" for Sitting\n\"stan\" for Standing")
-        print("\"stay\" for Staying\n\"w\" for Walking")
-        print("\"j\" for Jumping")
+        print("\n\nWhat activity are you going to perform? Type one of the following:")
+        for label in LABELS_NAMES:
+            print(label)
 
-        activity = input_to_activity(input())
+        activity = validate_input(input())
         print("Your activity: ", activity)
         if(activity == -1):
             print("Wrong input, choose again")

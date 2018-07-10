@@ -1,0 +1,17 @@
+##################################################
+### DESCRIPTION
+##################################################
+Pushup - normal spacing, telephone in the middle
+Squat - up - hands vertically, down - hands horizontally
+Situp - hands behind the back, not full motion
+Jumping - slight jumps, hands vertically
+Lunge - left/right leg in front interchangably
+
+##################################################
+### SAMPLES
+##################################################
+TIME_STEP = 10
+SEGMENT_TIME_SIZE = 10
+1	5 activities: (Pushup, Squat, Situp, Jumping, Lunge)
+	DATA_COLLECTION_TIME = 200
+

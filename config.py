@@ -15,19 +15,6 @@ COLUMN_NAMES = [
     'mag-z-axis'
 ]
 
-# Old activities (usual)
-"""
-LABELS_NAMES = [
-    'Downstairs',
-    'Upstairs',
-    'Sitting',
-    'Standing',
-    'Staying',
-    'Walking',
-    'Jumping'
-]
-"""
-
 LABELS_NAMES = [
     'Pushup',
     'Squat',
@@ -36,13 +23,15 @@ LABELS_NAMES = [
     'Lunge'
 ]
 
+# Data
 DATA_DIR = 'data/'
 DATA_TEMP_DIR = 'data_temp/'
 DATA_PATH = 'data/data.pckl'
-MODEL_PATH = 'model/model.h5'
 
+# Model
+MODEL_PATH = 'model/model.h5'
 # Tensorflow only
-MODEL_META_PATH = 'model/classificator.ckpt.meta'
+MODEL_META_PATH = 'model/model.ckpt.meta'
 MODEL_CHECKPOINT_PATH = 'model/'
 
 
@@ -74,7 +63,7 @@ DATA_TYPE = 'h' # Short integer
 DATA_SIZE_BYTES = 2
 
 # How many times to collect samples
-DATA_COLLECTION_ITERATIONS = 3
+DATA_COLLECTION_ITERATIONS = 1
 SCALE_FACTOR = 100
 
 # Data preprocessing

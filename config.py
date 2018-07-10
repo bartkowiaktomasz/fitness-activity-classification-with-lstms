@@ -5,10 +5,10 @@ COLUMN_NAMES = [
     'activity',
     'acc-x-axis',
     'acc-y-axis',
-    'acc-z-axis'
+    'acc-z-axis',
     'gyro-x-axis',
     'gyro-y-axis',
-    'gyro-z-axis'
+    'gyro-z-axis',
     'mag-x-axis',
     'mag-y-axis',
     'mag-z-axis'
@@ -41,7 +41,7 @@ MODEL_CHECKPOINT_PATH = 'model/'
 RANDOM_SEED = 13
 
 # Model
-N_CLASSES = 5
+N_CLASSES = len(LABELS_NAMES)
 N_FEATURES = 3  # acc, gyro, magnetometer
 
 # Hyperparameters

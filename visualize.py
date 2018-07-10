@@ -7,7 +7,7 @@ from config import *
 
 def applyPlotStyle():
     plt.grid(True)
-    plt.xlim(0,plotRange_x)
+    plt.xlim(0, plotRange_x)
     plt.ylim(-1 * plotRange_y, plotRange_y)
     plt.ylabel('Acceleration (mG)')
 
@@ -23,7 +23,6 @@ def makePlot():
     plt.title('Acceleration y')
     plt.plot(ay, 'bo-', label='Acceleration y')
 
-
     plt.subplot(2,2,3)
     applyPlotStyle()
     plt.title('Acceleration z')
@@ -36,7 +35,6 @@ def drawConfusionMatrix(cm):
     plt.xlabel('Predicted label')
     plt.title("Confusion matrix")
     plt.show()
-
 
 # Interface function for gatt tool
 def drawGraphs(_ax, _ay, _az):

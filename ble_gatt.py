@@ -131,12 +131,12 @@ def runWebBLE(activity):
 
     activity_list += [activity for _ in range(DATA_COLLECTION_TIME)]
     data_dict = {
-                'activity': activity_list, 'acc-x-axis': ax_readings,
-                'acc-y-axis': ay_readings, 'acc-z-axis': az_readings, \
-                'gyro-x-axis': gx_readings, 'gyro-y-axis': gy_readings, \
-                'gyro-z-axis': gz_readings, 'mag-x-axis': mx_readings, \
-                'mag-y-axis': my_readings, 'mag-z-axis': mz_readings
-                 }
+                COLUMN_NAMES[0]: activity_list, COLUMN_NAMES[1]: ax_readings,
+                COLUMN_NAMES[2]: ay_readings, COLUMN_NAMES[3]: az_readings, \
+                COLUMN_NAMES[4]: gx_readings, COLUMN_NAMES[5]: gy_readings, \
+                COLUMN_NAMES[6]: gz_readings, COLUMN_NAMES[7]: mx_readings, \
+                COLUMN_NAMES[8]: my_readings, COLUMN_NAMES[9]: mz_readings
+                }
     data_frame = pd.DataFrame(data=data_dict)
 
     num_files = len(glob.glob(DATA_TEMP_DIR + '*.pckl'))
@@ -211,12 +211,12 @@ def runBLE():
         activity_list += [activity for _ in range(SEGMENT_TIME_SIZE)]
 
     data_dict = {
-                'activity': activity_list, 'acc-x-axis': ax_readings,
-                'acc-y-axis': ay_readings, 'acc-z-axis': az_readings, \
-                'gyro-x-axis': gx_readings, 'gyro-y-axis': gy_readings, \
-                'gyro-z-axis': gz_readings, 'mag-x-axis': mx_readings, \
-                'mag-y-axis': my_readings, 'mag-z-axis': mz_readings
-                 }
+                COLUMN_NAMES[0]: activity_list, COLUMN_NAMES[1]: ax_readings,
+                COLUMN_NAMES[2]: ay_readings, COLUMN_NAMES[3]: az_readings,
+                COLUMN_NAMES[4]: gx_readings, COLUMN_NAMES[5]: gy_readings,
+                COLUMN_NAMES[6]: gz_readings, COLUMN_NAMES[7]: mx_readings,
+                COLUMN_NAMES[8]: my_readings, COLUMN_NAMES[9]: mz_readings
+                }
     data_frame = pd.DataFrame(data=data_dict)
 
     is_save = input("Do you want to save the sample? [y/n]")

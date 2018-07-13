@@ -197,7 +197,7 @@ def runBLE():
             ay_readings_graph.append(ay)
             az_readings_graph.append(az)
 
-            # vis.drawGraphs(ax_readings_graph, ay_readings_graph, az_readings_graph)
+            vis.drawGraphs(ax_readings_graph, ay_readings_graph, az_readings_graph)
 
             graph_counter += 1
             if(graph_counter > 50):

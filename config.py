@@ -29,10 +29,10 @@ DATA_PATH = 'data/data.pckl'
 
 # Model
 MODEL_PATH = 'model/model.h5'
+MODEL_PATH_DIR = 'model/'
 
 # Tensorflow only
 MODEL_META_PATH = 'model/model.ckpt.meta'
-MODEL_CHECKPOINT_PATH = 'model/'
 
 
 ##################################################

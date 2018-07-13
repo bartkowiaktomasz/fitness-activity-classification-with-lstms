@@ -7,23 +7,13 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.utils import shuffle
 
 from visualize import drawConfusionMatrix
-from preprocessing import get_convoluted_data
+from preprocessing import get_convoluted_data, one_hot_to_label, softmax_to_one_hot
 from config import *
 
-def one_hot_to_label(array):
-    i = np.argmax(array)
-    return LABELS_NAMES[i]
-
-def softmax_to_one_hot(array):
-    i = np.argmax(array)
-    one_hot = np.zeros(len(array))
-    one_hot[i] = 1
-    return one_hot
-
-if __name__ == '__main__':
+def load_test_model(path):
 
     # Load model
-    model = load_model(MODEL_PATH)
+    model = load_model(path)
     data = pd.read_pickle(DATA_PATH)
     X_test, y_test = get_convoluted_data(data)
     X_test, y_test = shuffle(X_test, y_test, random_state=0)
@@ -34,6 +24,11 @@ if __name__ == '__main__':
     for actual, predicted in zip(y_test, y_predicted):
         print("Actual: ", one_hot_to_label(actual), "\t Predicted: ", one_hot_to_label(predicted))
 
+    return y_predicted, y_test
+
+if __name__ == '__main__':
+
+    y_predicted, y_test = load_test_model(MODEL_PATH)
     print("Final accuracy: ", accuracy_score(y_test, y_predicted))
 
     # Confusion matrix

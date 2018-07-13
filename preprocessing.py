@@ -60,7 +60,7 @@ def one_hot_encode(labels):
     Take as input a list of labels (strings) and encode them using one_hot_encoding scheme,
     i.e. assuming there are 3 activities: A, B in the LABELS_NAMES array,
     if the input is [A, B] then return [[1, 0, 0].[0, 1, 0]].
-    If the label does not exist then print informative message and exit.
+    If the label does not exist then raise a NameError.
     """
     encoded = []
     for i, label in enumerate(labels):
@@ -68,7 +68,7 @@ def one_hot_encode(labels):
         try:
             label_position(label)
         except NameError:
-            pass
+            raise NameError
         array[label_position(label)] = 1
         encoded.append(array)
 
@@ -83,3 +83,22 @@ def label_position(label):
         if(LABELS_NAMES[i] == label):
             return i
     raise NameError('Label does not exist')
+
+def one_hot_to_label(array):
+    """
+    Take as input a one-hot encoded array and return a label corresponding to "one".
+    i.e for [0, 0, 1] return label at index 2.
+    """
+    i = np.argmax(array)
+    return LABELS_NAMES[i]
+
+def softmax_to_one_hot(array):
+    """
+    Take an array of numbers as input and return one-hot encoded version of the
+    array, where "one" corresponds to the highest number in the array.
+    i.e. for [0, 2, 5, 3] return [0, 0, 1, 0]
+    """
+    i = np.argmax(array)
+    one_hot = np.zeros(len(array))
+    one_hot[i] = 1
+    return one_hot

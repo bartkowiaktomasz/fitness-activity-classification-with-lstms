@@ -16,12 +16,19 @@ COLUMN_NAMES = [
 
 LABELS_NAMES = [
     'Pushup',
+    'Pushup_Incorrect',
     'Squat',
     'Situp',
+    'Situp_Incorrect',
     'Jumping',
     'Lunge'
 ]
-
+"""
+LABELS_NAMES = [
+    'Situp',
+    'Situp_Incorrect',
+]
+"""
 # Data
 DATA_DIR = 'data/'
 DATA_TEMP_DIR = 'data_temp/'

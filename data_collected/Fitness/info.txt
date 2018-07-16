@@ -10,6 +10,6 @@ Lunge - left/right leg in front interchangably
 ##################################################
 ### SAMPLES
 ##################################################
-1,2	5 activities: (Pushup, Squat, Situp, Jumping, Lunge)
-	DATA_COLLECTION_TIME = 200
-
+1, 2, 3, 4, 5, 6 (andrzej)
+5 activities: (Pushup, Squat, Situp, Jumping, Lunge)
+DATA_COLLECTION_TIME = 200

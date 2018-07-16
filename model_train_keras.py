@@ -41,4 +41,8 @@ if __name__ == '__main__':
     model = createBidirectionalLSTM()
 
     # Save the model
+    # model_json = model.to_json()
+    # with open("model/model.json", "w") as file:
+        # file.write(model_json)
+    # model.save_weights("model/model_weights.h5")
     model.save(MODEL_PATH)

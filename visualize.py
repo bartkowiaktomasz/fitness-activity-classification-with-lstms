@@ -47,3 +47,14 @@ def drawGraphs(_ax, _ay, _az):
     az = _az
 
     drawnow(makePlot)
+
+def plot_keras_model():
+    from keras.utils import plot_model
+    from keras.models import load_model
+
+    model = load_model(MODEL_PATH)
+    plot_model(model, to_file="model/model.png")
+
+
+if __name__ == '__main__':
+    plot_keras_model()

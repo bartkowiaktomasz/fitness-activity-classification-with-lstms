@@ -3,7 +3,7 @@
 # Accessible at http://192.168.1.71:5000
 
 from flask import Flask, request, render_template
-from ble_gatt import runWebBLE
+from ble_gatt import web_collect_save_data
 
 from config import *
 
@@ -14,7 +14,7 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         result = request.form['activity']
-        runWebBLE(result)
+        web_collect_save_data(result)
     return render_template('index.html', activities=LABELS_NAMES)
 
 if __name__ == '__main__':

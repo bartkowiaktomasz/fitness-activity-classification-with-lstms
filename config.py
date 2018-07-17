@@ -23,12 +23,7 @@ LABELS_NAMES = [
     'Jumping',
     'Lunge'
 ]
-"""
-LABELS_NAMES = [
-    'Situp',
-    'Situp_Incorrect',
-]
-"""
+
 # Data
 DATA_DIR = 'data/'
 DATA_TEMP_DIR = 'data_temp/'

@@ -83,7 +83,7 @@ def gatt_read(gatt):
     rawdata = (gatt.before).decode('UTF-8').strip(' ').split(' ')
     return rawdata
 
-def runWebBLE(activity):
+def collect_data(activity, data_collection_time=DATA_COLLECTION_TIME):
     ax_readings = []
     ay_readings = []
     az_readings = []
@@ -95,16 +95,10 @@ def runWebBLE(activity):
     gz_readings = []
 
     gatt = gatt_handshake()
-
     graph_counter = 0
     activity_list = []
-    if(activity not in LABELS_NAMES):
-        print("Error: Wrong activity")
-        exit()
-    print("Selected activity: ", activity)
-
     inner_loop_counter = 0
-    while(inner_loop_counter < DATA_COLLECTION_TIME):
+    while(inner_loop_counter < data_collection_time):
         rawdata = gatt_read(gatt)
         ax, ay, az, gx, gy, gz, mx, my, mz = extract(rawdata)
 
@@ -129,7 +123,7 @@ def runWebBLE(activity):
 
         inner_loop_counter += 1
 
-    activity_list += [activity for _ in range(DATA_COLLECTION_TIME)]
+    activity_list += [activity for _ in range(data_collection_time)]
     data_dict = {
                 COLUMN_NAMES[0]: activity_list, COLUMN_NAMES[1]: ax_readings,
                 COLUMN_NAMES[2]: ay_readings, COLUMN_NAMES[3]: az_readings, \
@@ -138,9 +132,28 @@ def runWebBLE(activity):
                 COLUMN_NAMES[8]: my_readings, COLUMN_NAMES[9]: mz_readings
                 }
     data_frame = pd.DataFrame(data=data_dict)
+    return data_frame
 
+def web_collect_save_data(activity):
+    if(activity not in LABELS_NAMES):
+        print("Error: Wrong activity")
+        exit()
+    print("Selected activity: ", activity)
+
+    data_frame = collect_data(activity)
+
+    # Save sample
     num_files = len(glob.glob(DATA_TEMP_DIR + '*.pckl'))
     data_frame.to_pickle('data_temp/sample_{}_{}.pckl'.format(activity, num_files + 1))
+
+def web_collect_classify_activity(model):
+    from model_test_keras import test_model
+    # Set activity just to allow functions to use the data for classification
+    activity = LABELS_NAMES[0]
+    data_frame = collect_data(activity, SEGMENT_TIME_SIZE)
+    y_predicted, _ = test_model(model, data_frame)
+    
+    return y_predicted
 
 def runBLE():
     from model_test_tf import preprocess_evaluate

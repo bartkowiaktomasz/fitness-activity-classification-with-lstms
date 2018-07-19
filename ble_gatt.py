@@ -150,26 +150,27 @@ def web_collect_save_data(activity):
     num_files = len(glob.glob(DATA_TEMP_DIR + '*.pckl'))
     data_frame.to_pickle('data_temp/sample_{}_{}.pckl'.format(activity, num_files + 1))
 
-"""
-def web_collect_classify_activity(model):
+
+def web_collect_classify_activity():
     from model_test_keras import test_model
+    from keras.models import load_model
+
+    model = load_model(MODEL_PATH)
     # Set activity just to allow functions to use the data for classification
     activity = LABELS_NAMES[0]
     data_frame = collect_data(activity, SEGMENT_TIME_SIZE)
     y_predicted, _ = test_model(model, data_frame)
 
     return y_predicted
-"""
 
 def web_collect_request():
-    dummy_activity = "Pushup"
+    # Set activity just to allow functions to use the data for classification
+    dummy_activity = LABELS_NAMES[0]
     df = collect_data(dummy_activity, data_collection_time=SEGMENT_TIME_SIZE)
     df_json = df.to_json()
     payload = {PAYLOAD_KEY: df_json}
 
     r = requests.post(IP_ADDRESS, payload)
-    print(r.text)
-
     return r.text
 
 def runBLE():

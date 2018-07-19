@@ -30,11 +30,11 @@ DATA_TEMP_DIR = 'data_temp/'
 DATA_PATH = 'data/data.pckl'
 
 # Model
-MODEL_PATH = 'model/model.h5'
-MODEL_PATH_DIR = 'model/'
+MODEL_PATH = 'models/model.h5'
+MODEL_PATH_DIR = 'models/'
 
 # Tensorflow only
-MODEL_META_PATH = 'model/model.ckpt.meta'
+MODEL_META_PATH = 'models/model.ckpt.meta'
 
 
 ##################################################

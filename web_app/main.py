@@ -17,8 +17,8 @@ app = Flask(__name__)
 @app.route("/", methods = ['POST', 'GET'])
 def index():
     if request.method == 'POST':
-        response = web_collect_request()
-        return render_template('activity.html', activity=response)
+        predicted_activity = web_collect_request()
+        return render_template('activity.html', activity=predicted_activity)
     else:
         return render_template('index.html')
 

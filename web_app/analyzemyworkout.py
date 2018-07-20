@@ -1,6 +1,8 @@
-# Run with
-# FLASK_APP=main.py python -m flask run --host=0.0.0.0
-# Accessible at http://192.168.1.71:5000
+"""
+Run with
+FLASK_APP=analyzemyworkout.py python -m flask run --host=0.0.0.0
+Accessible at http://192.168.1.71:5000
+"""
 
 from flask import Flask, request, render_template
 import sys

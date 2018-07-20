@@ -7,7 +7,7 @@
     <meta name="author" content="Tomasz Bartkowiak">
     <link rel="icon" href"../static/images/logo.png">
 
-    <title>Analyze my workout!</title>
+    <title>Analyze my workout! - Data collection</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,10 @@
   <body class="text-center">
     <form action = "http://192.168.1.71:5000" method = "POST">
       <img class="mb-4" src="../static/images/logo.png" alt="" width="100" height="100">
-      <button class="btn btn-lg btn-dark btn-block" type="submit">Analyze my workout!</button>
+      <p class="vertical-space">Select activity to perform</p>
+      {% for activity in activities %}
+      <button class="btn btn-sm btn-dark btn-block" name="activity" type="submit" value= {{ activity }}>{{ activity }}</button>
+      {% endfor %}
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2018 Tomasz Bartkowiak</p>
     </form>
   </body>

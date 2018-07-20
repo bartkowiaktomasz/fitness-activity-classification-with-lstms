@@ -17,7 +17,7 @@
   </head>
 
   <body class="text-center">
-    <form action = "http://192.168.1.71:5000" method = "POST">
+    <form action = {{ ip_local }} method = "POST">
       <img class="mb-4" src="../static/images/logo.png" alt="" width="100" height="100">
       <p class="vertical-space">Select activity to perform</p>
       {% for activity in activities %}

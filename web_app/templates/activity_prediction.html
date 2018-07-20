@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Analyze my workout">
     <meta name="author" content="Tomasz Bartkowiak">
-    <link rel="icon" href"../static/images/logo.svg">
+    <link rel="icon" href"../static/images/logo.png">
 
     <title>Analyze my workout!</title>
 
@@ -19,10 +19,13 @@
 {% block body %}
   <body class="text-center">
     <div id="image">
-      <img src="../static/images/logo.svg" alt="" width="100" height="100">
+      <img src="../static/images/logo.png" alt="" width="100" height="100">
       <p class="vertical-space">
         My prediction for your current activity: {{ activity }}
       </p>
+      <form action = {{ ip_local }} method = "POST">
+        <button class="btn btn-lg btn-dark btn-block" type="submit">Try again!</button>
+      </form>
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2018 Tomasz Bartkowiak</p>
     </div>
   </body>

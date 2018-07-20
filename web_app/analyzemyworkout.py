@@ -20,9 +20,9 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         predicted_activity = web_collect_request()
-        return render_template('activity.html', activity=predicted_activity)
+        return render_template('activity_prediction.html', activity=predicted_activity, ip_local=IP_LOCAL)
     else:
-        return render_template('index.html')
+        return render_template('index.html', ip_local=IP_LOCAL)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

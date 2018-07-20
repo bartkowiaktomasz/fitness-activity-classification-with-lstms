@@ -136,7 +136,7 @@ def collect_data(activity, data_collection_time=DATA_COLLECTION_TIME):
     return data_frame
 
 """
-Used by data_collection_app
+Used by data_collection app
 """
 def web_collect_save_data(activity):
     if(activity not in LABELS_NAMES):
@@ -150,7 +150,8 @@ def web_collect_save_data(activity):
     num_files = len(glob.glob(DATA_TEMP_DIR + '*.pckl'))
     data_frame.to_pickle('data_temp/sample_{}_{}.pckl'.format(activity, num_files + 1))
 
-
+"""
+Classify locally - TO BE DELETED
 def web_collect_classify_activity():
     from model_test_keras import test_model
     from keras.models import load_model
@@ -162,6 +163,7 @@ def web_collect_classify_activity():
     y_predicted, _ = test_model(model, data_frame)
 
     return y_predicted
+"""
 
 def web_collect_request():
     # Set activity just to allow functions to use the data for classification
@@ -173,6 +175,7 @@ def web_collect_request():
     r = requests.post(IP_ADDRESS, payload)
     return r.text
 
+"""
 def runBLE():
     from model_test_tf import preprocess_evaluate
 
@@ -257,9 +260,9 @@ def runBLE():
     is_evaluate = input("Do you want to evaluate (test) the sample? [y/n]")
     if(is_evaluate == "y"):
         preprocess_evaluate(data_frame)
-
+"""
 ##################################################
 ### MAIN
 ##################################################
-if __name__ == '__main__':
-    runBLE()
+# if __name__ == '__main__':
+    # runBLE()

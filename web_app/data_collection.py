@@ -19,7 +19,7 @@ def index():
     if request.method == 'POST':
         result = request.form['activity']
         web_collect_save_data(result)
-    return render_template('choose_activity.html', activities=LABELS_NAMES)
+    return render_template('choose_activity.html', activities=LABELS_NAMES, ip_local=IP_LOCAL)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

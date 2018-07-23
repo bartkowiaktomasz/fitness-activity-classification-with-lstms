@@ -26,7 +26,7 @@ LABELS_NAMES = [
 
 # Data
 DATA_DIR = 'data/'
-DATA_TEMP_DIR = 'data_temp/'
+DATA_TEMP_DIR = 'web_app/data_temp/'
 DATA_PATH = 'data/data.pckl'
 
 # Model
@@ -44,7 +44,7 @@ RANDOM_SEED = 13
 
 # Model
 N_CLASSES = len(LABELS_NAMES)
-N_FEATURES = 3  # acc, gyro, magnetometer
+N_FEATURES = 9  # acc, gyro, magnetometer
 
 # Hyperparameters
 N_LSTM_LAYERS = 2
@@ -67,7 +67,7 @@ DATA_TYPE = 'h' # Short integer
 DATA_SIZE_BYTES = 2 # Size of short
 
 # How many times to collect samples
-DATA_COLLECTION_TIME = 200
+DATA_COLLECTION_TIME = 100
 SCALE_FACTOR = 100
 
 # Data preprocessing
@@ -86,6 +86,6 @@ plotRange_y = 20
 ##################################################
 ### BACKEND REQUEST
 ##################################################
-IP_ADDRESS = "http://13.73.179.54:5000/"
+IP_ADDRESS = "http://104.214.226.170:5000"
 IP_LOCAL = "http://192.168.1.71:5000"
 PAYLOAD_KEY = "payload_json"

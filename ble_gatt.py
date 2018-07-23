@@ -108,6 +108,14 @@ def collect_data(activity, data_collection_time=DATA_COLLECTION_TIME):
         ay = ay/SCALE_FACTOR
         az = az/SCALE_FACTOR
 
+        gx = gx/SCALE_FACTOR
+        gy = gy/SCALE_FACTOR
+        gz = gz/SCALE_FACTOR
+
+        mx = mx/SCALE_FACTOR
+        my = my/SCALE_FACTOR
+        mz = mz/SCALE_FACTOR
+
         print("Acceleration x, y, z: ", ax, ay, az)
         # print("Gyroscope x, y, z: ", gx, gy, gz)
         # print("Magnetometer x, y, z: ", mx, my, mz)
@@ -123,6 +131,9 @@ def collect_data(activity, data_collection_time=DATA_COLLECTION_TIME):
         mz_readings.append(mz)
 
         inner_loop_counter += 1
+
+        # Wait some time before next request (BLE sends data too slowly)
+        time.sleep(0.25)
 
     activity_list += [activity for _ in range(data_collection_time)]
     data_dict = {

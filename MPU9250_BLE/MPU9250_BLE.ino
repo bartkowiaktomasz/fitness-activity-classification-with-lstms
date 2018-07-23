@@ -177,16 +177,18 @@ void loop()
     {
       if(SerialDebug)
       { 
-        // Acceleration is given in "mg"
+        // Acceleration is given in "mg" after multiplying by 1000
         // The order is ax, ay, az
         ax = (int16_t)1000*myIMU.ax;
         ay = (int16_t)1000*myIMU.ay;
         az = (int16_t)1000*myIMU.az;
 
-        gx = (int16_t)myIMU.gx;
-        gy = (int16_t)myIMU.gy;
-        gz = (int16_t)myIMU.gz;
+        // Unit is deg/s but after multiplying by 100 it is hdeg/s
+        gx = (int16_t)100*myIMU.gx;
+        gy = (int16_t)100*myIMU.gy;
+        gz = (int16_t)100*myIMU.gz;
 
+        // Unit is deg/s
         mx = (int16_t)myIMU.mx;
         my = (int16_t)myIMU.my;
         mz = (int16_t)myIMU.mz;
@@ -221,12 +223,12 @@ void loop()
       memcpy(data, &ax, sizeof(ax));
       memcpy(data + 1 * DATA_SIZE, &ay, sizeof(ay));
       memcpy(data + 2 * DATA_SIZE, &az, sizeof(az));
-      memcpy(data + 3 * DATA_SIZE, &az, sizeof(gx));
-      memcpy(data + 4 * DATA_SIZE, &az, sizeof(gy));
-      memcpy(data + 5 * DATA_SIZE, &az, sizeof(gz));
-      memcpy(data + 6 * DATA_SIZE, &az, sizeof(mx));
-      memcpy(data + 7 * DATA_SIZE, &az, sizeof(my));
-//      memcpy(data + 8 * DATA_SIZE, &az, sizeof(mz));
+      memcpy(data + 3 * DATA_SIZE, &gx, sizeof(gx));
+      memcpy(data + 4 * DATA_SIZE, &gy, sizeof(gy));
+      memcpy(data + 5 * DATA_SIZE, &gz, sizeof(gz));
+      memcpy(data + 6 * DATA_SIZE, &mx, sizeof(mx));
+      memcpy(data + 7 * DATA_SIZE, &my, sizeof(my));
+      memcpy(data + 8 * DATA_SIZE, &mz, sizeof(mz));
       
       SimbleeBLE.send(data, sizeof(data));
 

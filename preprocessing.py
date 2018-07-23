@@ -29,7 +29,7 @@ def get_convoluted_data(data):
         ay = data[COLUMN_NAMES[2]].values[i: i + SEGMENT_TIME_SIZE]
         az = data[COLUMN_NAMES[3]].values[i: i + SEGMENT_TIME_SIZE]
 
-        """
+
         gx = data[COLUMN_NAMES[4]].values[i: i + SEGMENT_TIME_SIZE]
         gy = data[COLUMN_NAMES[5]].values[i: i + SEGMENT_TIME_SIZE]
         gz = data[COLUMN_NAMES[6]].values[i: i + SEGMENT_TIME_SIZE]
@@ -37,9 +37,10 @@ def get_convoluted_data(data):
         mx = data[COLUMN_NAMES[7]].values[i: i + SEGMENT_TIME_SIZE]
         my = data[COLUMN_NAMES[8]].values[i: i + SEGMENT_TIME_SIZE]
         mz = data[COLUMN_NAMES[9]].values[i: i + SEGMENT_TIME_SIZE]
-        """
 
-        data_convoluted.append([ax, ay, az])
+
+        data_convoluted.append([ax, ay, az, gx, gy, gz, mx, my, mz])
+        # data_convoluted.append([ax, ay, az])
 
         # Label for a data window is the label that appears most commonly
         label = stats.mode(data[COLUMN_NAMES[0]][i: i + SEGMENT_TIME_SIZE])[0][0]

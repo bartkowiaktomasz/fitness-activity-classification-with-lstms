@@ -13,6 +13,16 @@ from bayes_opt import BayesianOptimization
 from preprocessing import get_convoluted_data, softmax_to_one_hot
 from config import *
 
+# Hyperparameters-optimized (Bayesian optimization appends to that list)
+hyperparametersOptimized = {'segment_time_size': [],
+                            'time_step': [],
+                            'learning_rate': [],
+                            'n_hidden_neurons': [],
+                            'droput_rate': [],
+                            'n_epochs': [],
+                            'batch_size': [],
+                            'accuracy': []}
+
 def createBidirectionalLSTM(segment_time_size,
                             n_hidden_neurons,
                             learning_rate,
@@ -76,6 +86,15 @@ def evaluate(segment_time_size,
     y_predicted = np.asarray([softmax_to_one_hot(y) for y in y_predicted])
     accuracy = accuracy_score(y_test, y_predicted)
 
+    hyperparametersOptimized['segment_time_size'].append(segment_time_size)
+    hyperparametersOptimized['time_step'].append(time_step)
+    hyperparametersOptimized['learning_rate'].append(learning_rate)
+    hyperparametersOptimized['n_hidden_neurons'].append(n_hidden_neurons)
+    hyperparametersOptimized['droput_rate'].append(droput_rate)
+    hyperparametersOptimized['n_epochs'].append(n_epochs)
+    hyperparametersOptimized['batch_size'].append(batch_size)
+    hyperparametersOptimized['accuracy'].append(accuracy)
+
     return accuracy
 
 
@@ -91,20 +110,26 @@ if __name__ == '__main__':
                    N_EPOCHS,
                    BATCH_SIZE)
 
-    print("Accuracy: ", acc)
-
-    """
     gp_params = {"alpha": 1e-5}
-    evaluateBO = BayesianOptimization(evaluate, {'': (100, 1000),
-                                                 'N_HIDDEN_NEURONS': (5, 30),
-                                                 'BATCH_SIZE': (10, 100)})
+    evaluateBO = BayesianOptimization(evaluate, {'segment_time_size': (20, 100),
+                                                 'time_step': (5, 50),
+                                                 'learning_rate': (0.0005, 0.005),
+                                                 'n_hidden_neurons': (5, 30),
+                                                 'droput_rate': (0.2, 0.8),
+                                                 'n_epochs': (10, 50),
+                                                 'batch_size': (10, 50)})
 
-    evaluateBO.explore({'SEGMENT_TIME_SIZE': [100, 1000],
-                        'N_HIDDEN_NEURONS': [5, 30],
-                        'BATCH_SIZE': [10, 100]})
+    evaluateBO.explore({'segment_time_size': (20, 100),
+                        'time_step': (5, 50),
+                        'learning_rate': (0.0005, 0.005),
+                        'n_hidden_neurons': (5, 30),
+                        'droput_rate': (0.2, 0.8),
+                        'n_epochs': (10, 50),
+                        'batch_size': (10, 50)})
 
-    evaluateBO.maximize(n_iter=10, **gp_params)
+    evaluateBO.maximize(n_iter=25, **gp_params)
 
     print('Final Results')
     print('Evaluation: %f' % evaluateBO.res['max']['max_val'])
-    """
+
+    np.save('hyperparametersOptimized.npy', hyperparametersOptimized)

@@ -102,13 +102,6 @@ if __name__ == '__main__':
 
     # Load data
     data = pd.read_pickle(DATA_PATH)
-    acc = evaluate(SEGMENT_TIME_SIZE,
-                   TIME_STEP,
-                   LEARNING_RATE,
-                   N_HIDDEN_NEURONS,
-                   DROPOUT_RATE,
-                   N_EPOCHS,
-                   BATCH_SIZE)
 
     gp_params = {"alpha": 1e-5}
     evaluateBO = BayesianOptimization(evaluate, {'segment_time_size': (20, 100),

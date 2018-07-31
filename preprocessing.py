@@ -5,7 +5,9 @@ from scipy import stats
 
 from config import * # Global variables
 
-def get_convoluted_data(data):
+def get_convoluted_data(data,
+                        segment_time_size=SEGMENT_TIME_SIZE,
+                        time_step=TIME_STEP):
     """
     Take as input pandas dataframe and return a tuple: convoluted data and labels.
     Convoluted data is basically the data extracted by sliding a window of size
@@ -16,34 +18,34 @@ def get_convoluted_data(data):
     labels = []
 
     increment = 0
-    if(len(data) == SEGMENT_TIME_SIZE):
+    if(len(data) == segment_time_size):
         increment = 1
-    elif(len(data) < SEGMENT_TIME_SIZE):
+    elif(len(data) < segment_time_size):
         raise ValueError
 
-    # Slide a "SEGMENT_TIME_SIZE" wide window with a step size of "TIME_STEP"
+    # Slide a "segment_time_size" wide window with a step size of "TIME_STEP"
     #   Increment allows the loop to run if there is just one sample, for which
-    #   len(data) == SEGMENT_TIME_SIZE
-    for i in range(0, len(data) - SEGMENT_TIME_SIZE + increment, TIME_STEP):
-        ax = data[COLUMN_NAMES[1]].values[i: i + SEGMENT_TIME_SIZE]
-        ay = data[COLUMN_NAMES[2]].values[i: i + SEGMENT_TIME_SIZE]
-        az = data[COLUMN_NAMES[3]].values[i: i + SEGMENT_TIME_SIZE]
+    #   len(data) == segment_time_size
+    for i in range(0, len(data) - segment_time_size + increment, time_step):
+        ax = data[COLUMN_NAMES[1]].values[i: i + segment_time_size]
+        ay = data[COLUMN_NAMES[2]].values[i: i + segment_time_size]
+        az = data[COLUMN_NAMES[3]].values[i: i + segment_time_size]
 
 
-        gx = data[COLUMN_NAMES[4]].values[i: i + SEGMENT_TIME_SIZE]
-        gy = data[COLUMN_NAMES[5]].values[i: i + SEGMENT_TIME_SIZE]
-        gz = data[COLUMN_NAMES[6]].values[i: i + SEGMENT_TIME_SIZE]
+        gx = data[COLUMN_NAMES[4]].values[i: i + segment_time_size]
+        gy = data[COLUMN_NAMES[5]].values[i: i + segment_time_size]
+        gz = data[COLUMN_NAMES[6]].values[i: i + segment_time_size]
 
-        mx = data[COLUMN_NAMES[7]].values[i: i + SEGMENT_TIME_SIZE]
-        my = data[COLUMN_NAMES[8]].values[i: i + SEGMENT_TIME_SIZE]
-        mz = data[COLUMN_NAMES[9]].values[i: i + SEGMENT_TIME_SIZE]
+        mx = data[COLUMN_NAMES[7]].values[i: i + segment_time_size]
+        my = data[COLUMN_NAMES[8]].values[i: i + segment_time_size]
+        mz = data[COLUMN_NAMES[9]].values[i: i + segment_time_size]
 
 
         data_convoluted.append([ax, ay, az, gx, gy, gz, mx, my, mz])
         # data_convoluted.append([ax, ay, az])
 
         # Label for a data window is the label that appears most commonly
-        label = stats.mode(data[COLUMN_NAMES[0]][i: i + SEGMENT_TIME_SIZE])[0][0]
+        label = stats.mode(data[COLUMN_NAMES[0]][i: i + segment_time_size])[0][0]
         labels.append(label)
 
     data_convoluted = np.asarray(data_convoluted, dtype=np.float32)

@@ -48,9 +48,8 @@ N_FEATURES = 9  # acc, gyro, magnetometer
 
 # Hyperparameters
 N_LSTM_LAYERS = 2
-N_EPOCHS = 20
-L2_LOSS = 0.0015
-LEARNING_RATE = 0.0025
+N_EPOCHS = 30
+LEARNING_RATE = 0.001
 N_HIDDEN_NEURONS = 30
 BATCH_SIZE = 10
 DROPOUT_RATE = 0.5
@@ -75,7 +74,7 @@ TIME_STEP = 20
 SEGMENT_TIME_SIZE = 40
 
 # Train/test proportion
-TEST_SIZE = 0.3
+TEST_SIZE = 0.2
 
 ##################################################
 ### VISUALIZE
@@ -86,6 +85,8 @@ plotRange_y = 20
 ##################################################
 ### BACKEND REQUEST
 ##################################################
-IP_ADDRESS = "http://104.214.226.170:5000"
+PROTOCOL = "http://"
+PORT = ":5000"
+IP_ADDRESS = PROTOCOL + "13.80.134.118" + PORT
 IP_LOCAL = "http://192.168.1.71:5000"
 PAYLOAD_KEY = "payload_json"

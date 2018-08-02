@@ -265,33 +265,46 @@ class Tensor {
     std::vector<float> data_;
 };
 
+enum ActivationType {
+    kLinear = 1,
+    kRelu = 2,
+    kSoftPlus = 3,
+    kSigmoid = 4,
+    kTanh = 5,
+    kHardSigmoid = 6
+};
+
+enum LayerType {
+    kDense = 1,
+    kConvolution2d = 2,
+    kFlatten = 3,
+    kElu = 4,
+    kActivation = 5,
+    kMaxPooling2D = 6,
+    kLSTM = 7,
+    kEmbedding = 8
+};
+
 class KerasLayer {
   public:
     KerasLayer() {}
 
     virtual ~KerasLayer() {}
 
-    virtual bool LoadLayer(std::ifstream* file) = 0;
+    virtual bool LoadLayer() = 0;
 
     virtual bool Apply(Tensor* in, Tensor* out) = 0;
 };
 
 class KerasLayerActivation : public KerasLayer {
   public:
-    enum ActivationType {
-        kLinear = 1,
-        kRelu = 2,
-        kSoftPlus = 3,
-        kSigmoid = 4,
-        kTanh = 5,
-        kHardSigmoid = 6
-    };
-
     KerasLayerActivation() : activation_type_(ActivationType::kLinear) {}
 
     virtual ~KerasLayerActivation() {}
 
-    virtual bool LoadLayer(std::ifstream* file);
+    virtual bool LoadLayer() { return true; }
+
+    bool LoadActivation(ActivationType activation_);
 
     virtual bool Apply(Tensor* in, Tensor* out);
 
@@ -305,7 +318,7 @@ class KerasLayerDense : public KerasLayer {
 
     virtual ~KerasLayerDense() {}
 
-    virtual bool LoadLayer(std::ifstream* file);
+    virtual bool LoadLayer();
 
     virtual bool Apply(Tensor* in, Tensor* out);
 
@@ -314,65 +327,6 @@ class KerasLayerDense : public KerasLayer {
     Tensor biases_;
 
     KerasLayerActivation activation_;
-};
-
-class KerasLayerConvolution2d : public KerasLayer {
-  public:
-    KerasLayerConvolution2d() {}
-
-    virtual ~KerasLayerConvolution2d() {}
-
-    virtual bool LoadLayer(std::ifstream* file);
-
-    virtual bool Apply(Tensor* in, Tensor* out);
-
-  private:
-    Tensor weights_;
-    Tensor biases_;
-
-    KerasLayerActivation activation_;
-};
-
-class KerasLayerFlatten : public KerasLayer {
-  public:
-    KerasLayerFlatten() {}
-
-    virtual ~KerasLayerFlatten() {}
-
-    virtual bool LoadLayer(std::ifstream* file);
-
-    virtual bool Apply(Tensor* in, Tensor* out);
-
-  private:
-};
-
-class KerasLayerElu : public KerasLayer {
-  public:
-    KerasLayerElu() : alpha_(1.0f) {}
-
-    virtual ~KerasLayerElu() {}
-
-    virtual bool LoadLayer(std::ifstream* file);
-
-    virtual bool Apply(Tensor* in, Tensor* out);
-
-  private:
-    float alpha_;
-};
-
-class KerasLayerMaxPooling2d : public KerasLayer {
-  public:
-    KerasLayerMaxPooling2d() : pool_size_j_(0), pool_size_k_(0) {}
-
-    virtual ~KerasLayerMaxPooling2d() {}
-
-    virtual bool LoadLayer(std::ifstream* file);
-
-    virtual bool Apply(Tensor* in, Tensor* out);
-
-  private:
-    unsigned int pool_size_j_;
-    unsigned int pool_size_k_;
 };
 
 class KerasLayerLSTM : public KerasLayer {
@@ -381,7 +335,7 @@ class KerasLayerLSTM : public KerasLayer {
 
     virtual ~KerasLayerLSTM() {}
 
-    virtual bool LoadLayer(std::ifstream* file);
+    virtual bool LoadLayer();
 
     virtual bool Apply(Tensor* in, Tensor* out);
 
@@ -406,33 +360,8 @@ class KerasLayerLSTM : public KerasLayer {
     bool return_sequences_;
 };
 
-class KerasLayerEmbedding : public KerasLayer {
-  public:
-    KerasLayerEmbedding() {}
-
-    virtual ~KerasLayerEmbedding() {}
-
-    virtual bool LoadLayer(std::ifstream* file);
-
-    virtual bool Apply(Tensor* in, Tensor* out);
-
-  private:
-    Tensor weights_;
-};
-
 class KerasModel {
   public:
-    enum LayerType {
-        kDense = 1,
-        kConvolution2d = 2,
-        kFlatten = 3,
-        kElu = 4,
-        kActivation = 5,
-        kMaxPooling2D = 6,
-        kLSTM = 7,
-        kEmbedding = 8
-    };
-
     KerasModel() {}
     virtual ~KerasModel() {
         for (unsigned int i = 0; i < layers_.size(); i++) {
@@ -440,7 +369,7 @@ class KerasModel {
         }
     }
 
-    virtual bool LoadModel(const std::string& filename);
+    virtual bool LoadModel();
 
     virtual bool Apply(Tensor* in, Tensor* out);
 

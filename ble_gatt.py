@@ -133,7 +133,7 @@ def collect_data(activity, data_collection_time=DATA_COLLECTION_TIME):
         inner_loop_counter += 1
 
         # Wait some time before next request (BLE sends data too slowly)
-        time.sleep(0.25)
+        time.sleep(BLE_DATA_COLLECTION_LATENCY)
 
     activity_list += [activity for _ in range(data_collection_time)]
     data_dict = {

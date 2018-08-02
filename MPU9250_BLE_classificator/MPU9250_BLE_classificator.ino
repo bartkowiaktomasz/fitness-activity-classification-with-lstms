@@ -9,7 +9,6 @@
 
 #include "keras_model.h"
 #include "utils.h"
-#include "config.h"
 
 #include "quaternionFilters.h"
 #include "MPU9250.h"
@@ -116,7 +115,7 @@ void setup()
   // start the BLE stack
   SimbleeBLE.begin();
 
-  model.LoadModel("lstm.model");
+  model.LoadModel();
 }
 
 void loop()

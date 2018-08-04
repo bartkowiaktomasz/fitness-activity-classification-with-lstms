@@ -1,3 +1,12 @@
+"""
+Script used to test the classifier.
+It loads the data stored in the "DATA_PATH" path
+(as specified in config file) and tests the pretrained
+model available at "MODEL_PATH".
+The script plots a confusion matrix and prints the
+performance of the classifier.
+"""
+
 import numpy as np
 import pandas as pd
 

@@ -1,5 +1,7 @@
 """
-Run with
+Script for data collection.
+Allows for collecting samples for particular activity.
+Run with:
 FLASK_APP=data_collection.py flask run --host=0.0.0.0
 Accessible at http://192.168.1.71:5000
 """

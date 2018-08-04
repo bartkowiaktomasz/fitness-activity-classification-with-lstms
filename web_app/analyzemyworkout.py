@@ -1,4 +1,8 @@
 """
+Analyze my workout web client.
+Allows for activity classification. The script collects the data,
+sends a JSON packet to the external server and displays the response
+(prediction from the server).
 Run with
 FLASK_APP=analyzemyworkout.py python -m flask run --host=0.0.0.0
 Accessible at http://192.168.1.71:5000

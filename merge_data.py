@@ -1,9 +1,17 @@
+"""
+Script for merging data samples stored in  "DATA_TEMP_DIR".
+"""
+
 import pandas as pd
 import glob
 
-from config import * # Global variables
+from config import *
 
 def merge_pckls(directory):
+    """
+    Take as input a directory and merge all .pckl
+    files in this directory.
+    """
     dfs = []
     for file in glob.glob(directory + '*.pckl'):
         data = pd.read_pickle(file)

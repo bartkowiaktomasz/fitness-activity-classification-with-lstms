@@ -1,3 +1,7 @@
+"""
+Library for data preprocessing.
+"""
+
 import numpy as np
 import pandas as pd
 
@@ -40,8 +44,10 @@ def get_convoluted_data(data,
         my = data[COLUMN_NAMES[8]].values[i: i + segment_time_size]
         mz = data[COLUMN_NAMES[9]].values[i: i + segment_time_size]
 
-
+        # When 9 features used
         data_convoluted.append([ax, ay, az, gx, gy, gz, mx, my, mz])
+
+        # When 3 features used
         # data_convoluted.append([ax, ay, az])
 
         # Label for a data window is the label that appears most commonly
@@ -50,10 +56,6 @@ def get_convoluted_data(data,
 
     data_convoluted = np.asarray(data_convoluted, dtype=np.float32)
     data_convoluted = data_convoluted.transpose(0, 2, 1)
-
-    # One-hot encoding
-    # Previously used get_dummies
-    # labels_ = np.asarray(pd.get_dummies(labels), dtype=np.float32)
 
     labels = one_hot_encode(labels)
     return data_convoluted, labels

@@ -24,7 +24,7 @@ def merge_pckls(directory):
     except ValueError:
         raise ValueError
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     try:
         df = merge_pckls(DATA_TEMP_DIR)
         print("Final data shape: ", df.shape)

@@ -3,28 +3,28 @@ Script for unit testing.
 Ignore warnings with:
 python -W ignore _unittests.py
 
-Run the test suite while BLE device disconnected to
-test for errors.
-
 Script does not test modules:
 - visualize.py (Visuzalization library),
 - model_train_keras.py,
 - model_test_keras.py,
 - model_evaluate_BO.py.
+
+Unittests should be run with BLE device off.
+
+Coverage:
+coverage run --source . --omit=model_*,visualize.py _unittests.py
 """
 
 import unittest
 import numpy as np
 import random
-
-from sklearn.model_selection import train_test_split
+import requests
 
 from config import *
 from preprocessing import *
 from merge_data import *
 from change_sample_label import *
 from ble_gatt import *
-from model_train_keras import createBidirectionalLSTM
 
 def create_sample_dataframe():
     """
@@ -128,6 +128,7 @@ class TestChangeLabel(unittest.TestCase):
 class TestBleGatt(unittest.TestCase):
     """
     Tests designed to be run while BLE device is off.
+    Functions should raise "pexpect.exceptions.TIMEOUT"
     """
 
     def test_extract(self):
@@ -142,9 +143,9 @@ class TestBleGatt(unittest.TestCase):
         with self.assertRaises(NameError):
             dummy_activity = "This activity does not exist"
             web_collect_save_data(dummy_activity)
-    """
+
     def test_gatt_handshake(self):
-        with self.assertRaises(TimeoutException):
+        with self.assertRaises(pexpect.exceptions.TIMEOUT):
             gatt_handshake()
 
     def test_gatt_read(self):
@@ -156,11 +157,30 @@ class TestBleGatt(unittest.TestCase):
         with self.assertRaises(pexpect.exceptions.TIMEOUT):
             dummy_activity = LABELS_NAMES[0]
             collect_data(dummy_activity)
-    
+
     def test_web_collect_request(self):
-        with self.assertRaises(TimeoutException):
+        with self.assertRaises(pexpect.exceptions.TIMEOUT):
             web_collect_request()
-    """
+
+class TestDataCollection(unittest.TestCase):
+    import web_app.data_collection
+
+    def test_index(self):
+        response = requests.get(IP_LOCAL)
+        self.assertEqual(response.status_code, 200)
+
+        response = requests.post(IP_LOCAL,
+                    {'activity': 'This activity does not exist'})
+        self.assertEqual(response.status_code, 500)
+
+class TestAnalyzemyworkout(unittest.TestCase):
+    import web_app.analyzemyworkout
+
+    def test_index(self):
+        response = requests.get(IP_LOCAL)
+        self.assertEqual(response.status_code, 200)
+
+
 
 if __name__ == '__main__':
     unittest.main()

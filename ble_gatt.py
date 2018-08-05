@@ -116,7 +116,7 @@ def collect_data(activity,
     graph_counter = 0
     activity_list = []
     inner_loop_counter = 0
-    while(inner_loop_counter < data_collection_time):
+    while(inner_loop_counter < data_collection_time): # pragma: no cover
         rawdata = gatt_read(gatt)
         ax, ay, az, gx, gy, gz, mx, my, mz = extract(rawdata)
 

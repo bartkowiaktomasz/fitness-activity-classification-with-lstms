@@ -26,14 +26,12 @@ def change_label(filename, label):
         data_changed.to_pickle(DATA_TEMP_DIR + 'sample_changed.pckl')
     except NameError:
         raise NameError
-        exit()
 
-    for i in data.index:
+    for i in data.index: # pragma: no cover
         data.at[i, COLUMN_NAMES[0]] = label
-
     return data
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     if(len(sys.argv) != 3):
         print("Usage: change_sample_label.py [FILENAME] [LABEL]")
         exit()

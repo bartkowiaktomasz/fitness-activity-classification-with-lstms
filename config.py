@@ -1,3 +1,8 @@
+"""
+Config file.
+All other scripts import variables from this config
+to their global namespace.
+"""
 ##################################################
 ### GLOBAL VARIABLES
 ##################################################
@@ -24,27 +29,24 @@ LABELS_NAMES = [
     'Lunge'
 ]
 
-# Data
+# Data directories
 DATA_DIR = 'data/'
 DATA_TEMP_DIR = 'web_app/data_temp/'
 DATA_PATH = 'data/data.pckl'
 
-# Model
+# Model directories
 MODEL_PATH = 'models/model.h5'
 MODEL_PATH_DIR = 'models/'
-
-# Tensorflow only
-MODEL_META_PATH = 'models/model.ckpt.meta'
-
 
 ##################################################
 ### MODEL
 ##################################################
+# Used for shuffling data
 RANDOM_SEED = 13
 
 # Model
 N_CLASSES = len(LABELS_NAMES)
-N_FEATURES = 9  # acc, gyro, magnetometer
+N_FEATURES = 9  # 3xacc, 3xgyro, 3xmagnetometer
 
 # Hyperparameters
 N_LSTM_LAYERS = 2
@@ -61,6 +63,10 @@ IMU_MAC_ADDRESS = "FF:3C:8F:22:C9:C8"
 UUID_DATA = "2d30c082-f39f-4ce6-923f-3484ea480596"
 BLE_HANDLE = "0x0011"
 
+# Timeout exception time
+TIMEOUT_EXCEPTION_TIME = 5
+
+# Frequency of requesting data from BLE device
 BLE_DATA_COLLECTION_LATENCY = 0.35
 
 # Data type sent from the device
@@ -69,6 +75,7 @@ DATA_SIZE_BYTES = 2 # Size of short
 
 # How many times to collect samples
 DATA_COLLECTION_TIME = 80
+# Factor to scale the readings
 SCALE_FACTOR = 100
 
 # Data preprocessing
@@ -81,6 +88,7 @@ TEST_SIZE = 0.2
 ##################################################
 ### VISUALIZE
 ##################################################
+# Interactive data visualization plot ranges
 plotRange_x = 50
 plotRange_y = 20
 
@@ -89,6 +97,6 @@ plotRange_y = 20
 ##################################################
 PROTOCOL = "http://"
 PORT = ":5000"
-IP_ADDRESS = PROTOCOL + "104.40.158.95" + PORT
+IP_EXTERNAL = PROTOCOL + "104.40.158.95" + PORT
 IP_LOCAL = "http://192.168.1.71:5000"
 PAYLOAD_KEY = "payload_json"

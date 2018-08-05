@@ -4,6 +4,7 @@ Bayesian Optimization (https://github.com/fmfn/BayesianOptimization)
 Hyperparameters and their corresponding model performace are saved
 as a dictionary in a .npy file.
 """
+
 from __future__ import print_function
 import numpy as np
 import pandas as pd
@@ -37,6 +38,18 @@ def evaluate(segment_time_size,
              droput_rate,
              n_epochs,
              batch_size):
+    """
+    Function used by a Bayesian optimizer. It takes as input
+    the hyperparameters that are to be optimized:
+    - segment_time_size: size of a sliding window,
+    - time_step: step (shift) of the sliding window
+    - learning_rate: learning rate used by the optimizer (Adam),
+    - n_hidden_neurons: number of hidden neurons (nodes) in one layer,
+    - droput_rate: dropout rate during training,
+    - n_epochs: number of epochs for training,
+    - batch_size: batch size.
+    Return the accuracy of the classifier (measured on the test dataset).
+    """
 
     # Convert to int (Bayesian optimization might select float values)
     segment_time_size = int(segment_time_size)

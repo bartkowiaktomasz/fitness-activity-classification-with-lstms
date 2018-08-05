@@ -10,11 +10,13 @@ Communication is established via pexpect python library.
 
 import pexpect
 import requests
+import signal
 import struct
 import time
 import sys
 import glob
 
+from time import sleep
 import pandas as pd
 
 import visualize as vis
@@ -110,7 +112,6 @@ def collect_data(activity,
     ax_readings_graph = []
     ay_readings_graph = []
     az_readings_graph = []
-
     gatt = gatt_handshake()
     graph_counter = 0
     activity_list = []
@@ -187,7 +188,7 @@ def web_collect_save_data(activity):
     """
     if(activity not in LABELS_NAMES):
         print("Error: Wrong activity")
-        exit()
+        raise NameError
     print("Selected activity: ", activity)
 
     data_frame = collect_data(activity)
@@ -213,5 +214,5 @@ def web_collect_request():
     payload = {PAYLOAD_KEY: df_json}
 
     # Make a HTTP request with a json payload
-    r = requests.post(IP_ADDRESS, payload)
+    r = requests.post(IP_EXTERNAL, payload)
     return r.text

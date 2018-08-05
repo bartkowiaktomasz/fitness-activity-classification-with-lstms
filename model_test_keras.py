@@ -19,6 +19,12 @@ from preprocessing import get_convoluted_data, one_hot_to_label, softmax_to_one_
 from config import *
 
 def test_model(model, data):
+    """
+    Function to test the keras model on a dataset.
+    Take as an input a keras model and a (pandas) test dataframe and
+    perform a prediction. Return two numpy arrays: predicted and true
+    labels.
+    """
     X_test, y_test = get_convoluted_data(data)
     X_test, y_test = shuffle(X_test, y_test, random_state=0)
 

@@ -15,9 +15,18 @@ def change_label(filename, label):
     Take as input a filename (sample to be changed)
     and a proper label. Save the sample and return it.
     """
-    data = pd.read_pickle(DATA_TEMP_DIR + file_name)
-    data_changed = change_label(data, label)
-    data_changed.to_pickle(DATA_TEMP_DIR + 'sample_changed.pckl')
+    if label not in LABELS_NAMES:
+        raise NameError
+        print("Incorrect label")
+        exit()
+
+    try:
+        data = pd.read_pickle(DATA_TEMP_DIR + file_name)
+        data_changed = change_label(data, label)
+        data_changed.to_pickle(DATA_TEMP_DIR + 'sample_changed.pckl')
+    except NameError:
+        raise NameError
+        exit()
 
     for i in data.index:
         data.at[i, COLUMN_NAMES[0]] = label

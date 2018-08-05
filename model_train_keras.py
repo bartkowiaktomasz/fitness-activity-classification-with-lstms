@@ -19,13 +19,26 @@ from preprocessing import get_convoluted_data
 from config import *
 
 def createBidirectionalLSTM(segment_time_size,
-                            n_hidden_neurons,
                             learning_rate,
+                            n_hidden_neurons,
                             droput_rate,
                             n_epochs,
                             batch_size,
                             X_train, y_train,
                             X_val, y_val):
+    """
+    Create a bidirectional Low-short term memory recurrent
+    neural network for activity recognition.
+    Input:
+    - segment_time_size: size of a sliding window,
+    - n_hidden_neurons: number of hidden neurons (nodes) in one layer,
+    - learning_rate: learning rate used by the optimizer (Adam),
+    - droput_rate: dropout rate during training,
+    - n_epochs: number of epochs for training,
+    - batch_size: batch size,
+    - X_train, y_train, X_val, y_val: training and valuation data and labels.
+    Returns sequential keras model.
+    """
 
     # Build a model
     model = Sequential()
@@ -56,8 +69,8 @@ if __name__ == '__main__':
                                                         shuffle=True)
     # Build a model
     model = createBidirectionalLSTM(SEGMENT_TIME_SIZE,
-                                    N_HIDDEN_NEURONS,
                                     LEARNING_RATE,
+                                    N_HIDDEN_NEURONS,
                                     DROPOUT_RATE,
                                     N_EPOCHS,
                                     BATCH_SIZE,

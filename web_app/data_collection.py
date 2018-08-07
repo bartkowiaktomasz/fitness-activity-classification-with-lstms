@@ -24,5 +24,5 @@ def index():
         web_collect_save_data(result)
     return render_template('choose_activity.html', activities=LABELS_NAMES, ip_local=IP_LOCAL)
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     app.run(host='0.0.0.0')

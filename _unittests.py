@@ -162,25 +162,5 @@ class TestBleGatt(unittest.TestCase):
         with self.assertRaises(pexpect.exceptions.TIMEOUT):
             web_collect_request()
 
-class TestDataCollection(unittest.TestCase):
-    import web_app.data_collection
-
-    def test_index(self):
-        response = requests.get(IP_LOCAL)
-        self.assertEqual(response.status_code, 200)
-
-        response = requests.post(IP_LOCAL,
-                    {'activity': 'This activity does not exist'})
-        self.assertEqual(response.status_code, 500)
-
-class TestAnalyzemyworkout(unittest.TestCase):
-    import web_app.analyzemyworkout
-
-    def test_index(self):
-        response = requests.get(IP_LOCAL)
-        self.assertEqual(response.status_code, 200)
-
-
-
 if __name__ == '__main__':
     unittest.main()

@@ -35,7 +35,6 @@ def get_convoluted_data(data,
         ay = data[COLUMN_NAMES[2]].values[i: i + segment_time_size]
         az = data[COLUMN_NAMES[3]].values[i: i + segment_time_size]
 
-
         gx = data[COLUMN_NAMES[4]].values[i: i + segment_time_size]
         gy = data[COLUMN_NAMES[5]].values[i: i + segment_time_size]
         gz = data[COLUMN_NAMES[6]].values[i: i + segment_time_size]

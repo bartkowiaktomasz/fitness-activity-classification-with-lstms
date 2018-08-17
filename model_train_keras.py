@@ -44,7 +44,8 @@ def createBidirectionalLSTM(segment_time_size,
     model = Sequential()
     model.add(Bidirectional(LSTM(n_hidden_neurons,
                             return_sequences=True,
-                            activation="tanh"), input_shape=(segment_time_size, N_FEATURES)))
+                            activation="tanh"), input_shape=(segment_time_size, N_FEATURES),
+                            merge_mode='sum'))
     model.add(Bidirectional(LSTM(n_hidden_neurons)))
     model.add(Dropout(droput_rate))
     model.add(Dense(N_CLASSES, activation='sigmoid'))

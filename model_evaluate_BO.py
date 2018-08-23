@@ -111,12 +111,12 @@ if __name__ == '__main__':
     evaluateBO.explore({'segment_time_size': (20, 100),
                         'time_step': (5, 50),
                         'learning_rate': (0.0005, 0.005),
-                        'n_hidden_neurons': (5, 30),
+                        'n_hidden_neurons': (5, 50),
                         'droput_rate': (0.2, 0.8),
                         'n_epochs': (10, 50),
                         'batch_size': (10, 50)})
 
-    evaluateBO.maximize(n_iter=25, **gp_params)
+    evaluateBO.maximize(n_iter=30, **gp_params)
 
     print('Final Results')
     print('Evaluation: %f' % evaluateBO.res['max']['max_val'])

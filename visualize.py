@@ -20,7 +20,7 @@ def applyPlotStyle():
     plt.grid(True)
     plt.xlim(0, plotRange_x)
     plt.ylim(-1 * plotRange_y, plotRange_y)
-    plt.ylabel('Acceleration (mG)')
+    plt.ylabel('Acceleration (da*g)')
 
 def makePlot():
     """
@@ -33,7 +33,6 @@ def makePlot():
     plt.plot(ax, 'ro-', label='')
 
     plt.subplot(2,2,2)
-    plt.ylabel('Acceleration (mG)')
     applyPlotStyle()
     plt.title('Acceleration y')
     plt.plot(ay, 'bo-', label='Acceleration y')

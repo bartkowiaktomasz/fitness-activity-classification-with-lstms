@@ -70,8 +70,8 @@ def evaluate(segment_time_size,
                                                       shuffle=True)
 
     model = createBidirectionalLSTM(segment_time_size,
-                                    n_hidden_neurons,
                                     learning_rate,
+                                    n_hidden_neurons,
                                     droput_rate,
                                     n_epochs,
                                     batch_size,
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     evaluateBO = BayesianOptimization(evaluate, {'segment_time_size': (20, 100),
                                                  'time_step': (5, 50),
                                                  'learning_rate': (0.0005, 0.005),
-                                                 'n_hidden_neurons': (5, 30),
+                                                 'n_hidden_neurons': (5, 50),
                                                  'droput_rate': (0.2, 0.8),
                                                  'n_epochs': (10, 50),
                                                  'batch_size': (10, 50)})

@@ -39,7 +39,6 @@ def createBidirectionalLSTM(segment_time_size,
     - X_train, y_train, X_val, y_val: training and valuation data and labels.
     Returns sequential keras model.
     """
-
     # Build a model
     model = Sequential()
     model.add(Bidirectional(LSTM(n_hidden_neurons,

@@ -52,7 +52,7 @@ N_FEATURES = 9  # 3xacc, 3xgyro, 3xmagnetometer
 N_LSTM_LAYERS = 2
 N_EPOCHS = 30
 LEARNING_RATE = 0.0005
-N_HIDDEN_NEURONS = 30
+N_HIDDEN_NEURONS = 50
 BATCH_SIZE = 30
 DROPOUT_RATE = 0.2
 
@@ -80,7 +80,7 @@ SCALE_FACTOR = 100
 
 # Data preprocessing
 TIME_STEP = 5
-SEGMENT_TIME_SIZE = 40
+SEGMENT_TIME_SIZE = 20
 
 # Train/test proportion
 TEST_SIZE = 0.2

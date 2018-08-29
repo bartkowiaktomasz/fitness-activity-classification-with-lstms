@@ -17,6 +17,7 @@ from sklearn.model_selection import train_test_split
 
 from preprocessing import get_convoluted_data
 from config import *
+from visualize import drawTrainTestHistory
 
 def createBidirectionalLSTM(segment_time_size,
                             learning_rate,
@@ -25,7 +26,8 @@ def createBidirectionalLSTM(segment_time_size,
                             n_epochs,
                             batch_size,
                             X_train, y_train,
-                            X_val, y_val):
+                            X_val, y_val,
+                            visualize=False):
     """
     Create a bidirectional Low-short term memory recurrent
     neural network for activity recognition.
@@ -50,10 +52,13 @@ def createBidirectionalLSTM(segment_time_size,
     model.add(Dense(N_CLASSES, activation='sigmoid'))
     adam_optimizer = Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
     model.compile(optimizer=adam_optimizer, loss='binary_crossentropy', metrics=['accuracy'])
-    model.fit(X_train, y_train,
-              batch_size=batch_size,
-              epochs=n_epochs,
-              validation_data=[X_val, y_val])
+    history = model.fit(X_train, y_train,
+                        batch_size=batch_size,
+                        epochs=n_epochs,
+                        validation_data=[X_val, y_val])
+
+    if(visualize):
+        drawTrainTestHistory(history)
 
     return model
 
@@ -75,5 +80,6 @@ if __name__ == '__main__':
                                     N_EPOCHS,
                                     BATCH_SIZE,
                                     X_train, y_train,
-                                    X_val, y_val)
+                                    X_val, y_val,
+                                    visualize=True)
     model.save(MODEL_PATH)

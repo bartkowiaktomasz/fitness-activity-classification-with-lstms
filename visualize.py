@@ -48,8 +48,10 @@ def drawConfusionMatrix(cm):
     (i.e. sklearn.metrics.confusion_matrix) and display it
     using a heatmap.
     """
-    plt.figure(figsize=(16, 14))
-    sns.heatmap(cm/(np.sum(cm, axis=1, keepdims=1)), xticklabels=LABELS_NAMES, yticklabels=LABELS_NAMES, annot=True);
+    plt.figure(figsize=(14, 10))
+    sns.set(font_scale=1.2)
+    hm = sns.heatmap(cm/(np.sum(cm, axis=1, keepdims=1)), xticklabels=LABELS_NAMES, yticklabels=LABELS_NAMES, annot=True);
+    hm.set_yticklabels(hm.get_yticklabels(), rotation=0)
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     plt.title("Confusion matrix")
@@ -81,6 +83,29 @@ def plot_keras_model(path):
 
     model = load_model(path)
     plot_model(model, to_file="model/model.png")
+
+def drawTrainTestHistory(history):
+    print(history.history.keys())
+
+    # summarize history for accuracy
+    plt.figure(figsize=(14, 10))
+    plt.plot(history.history['acc'])
+    plt.plot(history.history['val_acc'])
+    plt.title('Model accuracy')
+    plt.ylabel('Accuracy')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
+    plt.show()
+
+    # summarize history for loss
+    plt.figure(figsize=(14, 10))
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
+    plt.title('Model loss')
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
+    plt.show()
 
 if __name__ == '__main__':
     plot_keras_model(MODEL_PATH)

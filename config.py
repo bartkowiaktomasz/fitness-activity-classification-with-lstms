@@ -46,7 +46,7 @@ RANDOM_SEED = 13
 
 # Model
 N_CLASSES = len(LABELS_NAMES)
-N_FEATURES = 9  # 3xacc, 3xgyro, 3xmagnetometer
+N_FEATURES = len(COLUMN_NAMES) - 1
 
 # Hyperparameters
 N_LSTM_LAYERS = 2

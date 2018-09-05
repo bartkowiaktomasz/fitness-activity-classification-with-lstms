@@ -44,10 +44,10 @@ def get_convoluted_data(data,
         mz = data[COLUMN_NAMES[9]].values[i: i + segment_time_size]
 
         # When 9 features used
-        data_convoluted.append([ax, ay, az, gx, gy, gz, mx, my, mz])
+        # data_convoluted.append([ax, ay, az, gx, gy, gz, mx, my, mz])
 
         # When 3 features used
-        # data_convoluted.append([ax, ay, az])
+        data_convoluted.append([mx, my, mz])
 
         # Label for a data window is the label that appears most commonly
         label = stats.mode(data[COLUMN_NAMES[0]][i: i + segment_time_size])[0][0]

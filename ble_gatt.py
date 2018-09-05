@@ -176,7 +176,6 @@ def collect_data(activity,
     data_frame = pd.DataFrame(data=data_dict)
     return data_frame
 
-
 def web_collect_save_data(activity):
     """
     Interface function for the web client (data collection).

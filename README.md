@@ -23,7 +23,8 @@ The classifier achieved an overall accuracy of 96% (the model can be found in `m
 ![Confusion matrix](images/confusion_matrix.png)
 Yet the architecture is quite simple and consists of two stacked Bidirectional LSTM layers:
 ![LSTM Architecture](images/neural_network_architecture.png)
-The hyperparameters were optimized using Bayesian optimization.
+
+The hyperparameters of the network were optimized using Bayesian optimization.
 
 #### Data preprocessing
 The data fed into the classifier is preprocessed using *Sliding window approach* where each sample after preprocessing is a single window composed of many raw samples (tuples of IMU readings, in case of 9DOF IMU - 9 numbers), as presented on a figure below:

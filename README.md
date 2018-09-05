@@ -10,7 +10,8 @@ The system is built in such a way that it can be easily adapted to custom datase
 
 *Data collection* application:  
 
-![Data collection app](images/https://github.com/bartkowiaktomasz/Fitness-Activity-Classification-with-LSTMs/blob/Keras/images/data_collection_app.png)
+![Data collection app](images/images/data_collection_app.png)  
+
 *Analyzemyworkout* application:  
 
 ![Analyzemyworkout app](images/analyzemyworkout_app.png)

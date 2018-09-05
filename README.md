@@ -1,3 +1,4 @@
+
 # Fitness-Activity-Classification-with-LSTMs
 
 This repository contains code that was developed as a part of Master Thesis at Imperial College London *Movement Classification on Energy-efficient Sensor Using Neural Networks* written under the supervision of Dr Thomas Heinis.
@@ -8,7 +9,7 @@ The project tackles the area of Human Activity Recognition (HAR) by utilizing Bi
 The system is built in such a way that it can be easily adapted to custom datasets with arbitrary activities. It provides a web app *Data collection* that facilitates the data collection process. The *Analyzemyworkout* is a web application used for HAR classification.
 
 *Data collection* application:
-![Data collection app](images/data_collection_app.png)
+![Data collection app](images/https://github.com/bartkowiaktomasz/Fitness-Activity-Classification-with-LSTMs/blob/Keras/images/data_collection_app.png)
 *Analyzemyworkout* application:
 ![Analyzemyworkout app](images/analyzemyworkout_app.png)
 
@@ -19,30 +20,36 @@ The system is built in such a way that it can be easily adapted to custom datase
     pip install -r requirements.txt
 
 ## Results
-The classifier achieved an overall accuracy of 96% (the model can be found in `models/` directory. The confusion matrix resulting from testing the classifier on the test set can be seen below:
+The classifier achieved an overall accuracy of 96% (the model can be found in `models/` directory. The confusion matrix resulting from testing the classifier on the test set can be seen below:  
+
 ![Confusion matrix](images/confusion_matrix.png)
-Yet the architecture is quite simple and consists of two stacked Bidirectional LSTM layers:
+Yet the architecture is quite simple and consists of two stacked Bidirectional LSTM layers:  
+
 ![LSTM Architecture](images/neural_network_architecture.png)
 
 The hyperparameters of the network were optimized using Bayesian optimization.
 
 #### Data preprocessing
-The data fed into the classifier is preprocessed using *Sliding window approach* where each sample after preprocessing is a single window composed of many raw samples (tuples of IMU readings, in case of 9DOF IMU - 9 numbers), as presented on a figure below:
+The data fed into the classifier is preprocessed using *Sliding window approach* where each sample after preprocessing is a single window composed of many raw samples (tuples of IMU readings, in case of 9DOF IMU - 9 numbers), as presented on a figure below:  
+
 ![Sliding window approach](images/data_preprocessing.png)
 
 ## Architecture
 The repository consists of two systems: `Data collection system` and `Human Activity Recognition system` (aka *Analyzemyworkout*).
 
 ### Data collection system
-Data collection system is a web app written in `Flask` that establishes BLE connection with a wearable device (motion sensor/IMU) and saves the data as a `.pckl` file. Its high-level architecture is presented below:
+Data collection system is a web app written in `Flask` that establishes BLE connection with a wearable device (motion sensor/IMU) and saves the data as a `.pckl` file. Its high-level architecture is presented below:  
+
 ![Data collection architecture](images/data_collection_architecture.png)
 
 
 
 ### *Analyzemyworkout*
-*Analyzemyworkout* is a web app written in `Flask` that establishes BLE connection with a wearable device (motion sensor/IMU), preprocesses data and sends to an external server for classification. After receiving the response (JSON), it renders that response on the client's browser.
+*Analyzemyworkout* is a web app written in `Flask` that establishes BLE connection with a wearable device (motion sensor/IMU), preprocesses data and sends to an external server for classification. After receiving the response (JSON), it renders that response on the client's browser.  
+
 ![Analyzemyworkout response](images/analyzemyworkout_app_results.png)
-Its high-level architecture is presented below:
+Its high-level architecture is presented below:  
+
 ![Analyzemyworkout architecture](images/analyzemyworkout_architecture.png)
 
 ## Use
@@ -67,7 +74,8 @@ Motion sensor/IMU should be configured so that it sends one packet of data with 
       SimbleeBLE.send(data, sizeof(data));
 
 Where `ax, ay, az, gx, gy, gz, mx, my, mz` are the IMU readings in `x,y,z` axis from `accelerometer, gyroscope and magnetometer` respectively. The variables are declared as 2-byte integers (instead of 4-byte), due to BLE packet size restrictions.
-In order to establish BLE connection **MAC address**, **uuid of characteristic** and its **handle** should be known (see [GATT overview](https://www.bluetooth.com/specifications/gatt/generic-attributes-overview)).  `gatttool` and `hcitool` can be used to discover them using Command Line Interface (CLI):
+In order to establish BLE connection **MAC address**, **uuid of characteristic** and its **handle** should be known (see [GATT overview](https://www.bluetooth.com/specifications/gatt/generic-attributes-overview)).  `gatttool` and `hcitool` can be used to discover them using Command Line Interface (CLI):  
+
 ![gatt via CLI](images/gatt_cli.png)
 (1), (2) Connect to the device with known MAC address. (3) Discover characteristics. (4) Read particular characteristic. `pexpect` (see [documentation](https://pexpect.readthedocs.io/en/stable/)) can be used to automate the use of `gatt`.
 

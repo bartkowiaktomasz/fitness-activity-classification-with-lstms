@@ -8,9 +8,11 @@ The project tackles the area of Human Activity Recognition (HAR) by utilizing Bi
 
 The system is built in such a way that it can be easily adapted to custom datasets with arbitrary activities. It provides a web app *Data collection* that facilitates the data collection process. The *Analyzemyworkout* is a web application used for HAR classification.
 
-*Data collection* application:
+*Data collection* application:  
+
 ![Data collection app](images/https://github.com/bartkowiaktomasz/Fitness-Activity-Classification-with-LSTMs/blob/Keras/images/data_collection_app.png)
-*Analyzemyworkout* application:
+*Analyzemyworkout* application:  
+
 ![Analyzemyworkout app](images/analyzemyworkout_app.png)
 
 ## Requirements
@@ -47,7 +49,8 @@ Data collection system is a web app written in `Flask` that establishes BLE conn
 ### *Analyzemyworkout*
 *Analyzemyworkout* is a web app written in `Flask` that establishes BLE connection with a wearable device (motion sensor/IMU), preprocesses data and sends to an external server for classification. After receiving the response (JSON), it renders that response on the client's browser.  
 
-![Analyzemyworkout response](images/analyzemyworkout_app_results.png)
+![Analyzemyworkout response](images/analyzemyworkout_app_results.png)  
+
 Its high-level architecture is presented below:  
 
 ![Analyzemyworkout architecture](images/analyzemyworkout_architecture.png)

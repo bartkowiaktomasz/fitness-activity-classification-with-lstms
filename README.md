@@ -10,7 +10,7 @@ The system is built in such a way that it can be easily adapted to custom datase
 
 *Data collection* application:  
 
-![Data collection app](images/images/data_collection_app.png)  
+![Data collection app](images/data_collection_app.png)  
 
 *Analyzemyworkout* application:  
 
